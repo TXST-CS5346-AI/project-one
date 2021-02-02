@@ -1,2 +1,1 @@
-# project-one
-Car diagnosis software
+# Car diagnosis software
