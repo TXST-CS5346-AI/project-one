@@ -4,6 +4,7 @@
 
 Mainwindow::Mainwindow()
 {
+    outfile.open("project-one.log");
     createMenu();
     createHorizontalGroupBox();
     createGridGroupBox();
@@ -36,6 +37,9 @@ Mainwindow::Mainwindow()
 
 void Mainwindow::createMenu()
 {
+
+    outfile << "Creating menu for GUI....." << std::endl;
+
     menuBar = new QMenuBar;
 
     fileMenu = new QMenu(tr("&File"), this);

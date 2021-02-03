@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QDialog>
+#include <iostream>
+#include <fstream>
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -15,7 +17,6 @@ class QPushButton;
 class QTextEdit;
 QT_END_NAMESPACE
 
-//! [0]
 class Mainwindow : public QDialog
 {
     Q_OBJECT
@@ -44,7 +45,7 @@ private:
 
     QMenu *fileMenu;
     QAction *exitAction;
+    std::ofstream outfile;
 };
-//! [0]
 
 #endif // MAINWINDOW_H
