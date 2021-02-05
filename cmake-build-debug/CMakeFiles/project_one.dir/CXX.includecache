@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/Randall Henderson/project-one/src/main.cpp
+include/mainwindow.h
+C:/Users/Randall Henderson/project-one/src/include/mainwindow.h
+QApplication
+-
+
+C:/Users/Randall Henderson/project-one/src/mainwindow.cpp
+QtWidgets
+-
+include/mainwindow.h
+C:/Users/Randall Henderson/project-one/src/include/mainwindow.h
+
