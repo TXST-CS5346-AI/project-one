@@ -7,6 +7,10 @@
 #include <string>
 #include <fstream>
 
+#define INT 1
+#define STRING 2
+#define FLOAT 3
+
 using namespace std;
 
 class ConclusionStackItem
@@ -25,25 +29,27 @@ ConclusionStackItem::ConclusionStackItem(int ruleNum, int clauseNum)
 class VariableListItem
 {
 public:
-    VariableListItem(string nameP, bool instantiatedP, string valueP, string descriptionP);
+    VariableListItem(string nameP, bool instantiatedP, string valueP, string descriptionP, int typeP);
     string name;
     bool instantiated;
     string value;
     string description;
+    int type;
 };
-VariableListItem::VariableListItem(string nameP, bool instantiatedP, string valueP, string descriptionP)
+VariableListItem::VariableListItem(string nameP, bool instantiatedP, string valueP, string descriptionP, int typeP)
 {
     name = nameP;
     instantiated = instantiatedP;
     value = valueP;
     description = descriptionP;
+    type = typeP;
 }
 
 
 class BackwardChaining
 {
 private:
-  //  string conclusionList[10];
+    //  string conclusionList[10];
     char conclusion_list[10][3];
     char variable_list[10][3];
     char clause_variable_list[40][3];
@@ -63,7 +69,7 @@ private:
     int rule_stack[11];
     int clause_stack[11];
     int clauseVariableListIter;
- 
+
     float gpa;
     float experience;
 
@@ -86,7 +92,7 @@ public:
 
 int BackwardChaining::getClauseVarListItem(int ruleNumber, int clauseNumber)
 {
-    return ( (ruleNumber - 1) * 4 + clauseNumber );
+    return ((ruleNumber - 1) * 4 + clauseNumber);
 }
 
 void BackwardChaining::parseKnowledgeBase()
@@ -108,7 +114,7 @@ void BackwardChaining::parseKnowledgeBase()
     {
         cout << "Error reading file. " << endl;
     }
-    
+
 
 
 }
@@ -138,10 +144,6 @@ BackwardChaining::BackwardChaining()
         strcpy(clause_variable_list[curIter], "");
         clauseVariableListS[curIter] = "";
     }
-    /* enter conclusions which are the variables in the then part, 1 at
-    a time.  enter the conclusions in exact order starting at the 1st
-    if-then.  after last conclusion hit return key for rest of
-    conclusions */
     conclusionList.push_back("PO");
     conclusionList.push_back("QU");
     conclusionList.push_back("PO");
@@ -156,24 +158,16 @@ BackwardChaining::BackwardChaining()
     strcpy(conclusion_list[5], "PO");
     strcpy(conclusion_list[6], "PO");
 
-    /* enter variables which are in the if part, 1 at a time in the exact
-    order that they occur, up to 3 variables per if statement.  do not
-    duplicate any variable names.  any name is used only once.  if no
-    more variables left just hit return key.
-    */
-    variableList.push_back(VariableListItem("DE", false, "", "INPUT YES OR NO FOR DEGREE-?"));
-    variableList.push_back(VariableListItem("DI", false, "", "INPUT YES OR NO FOR DISCOVERY-?"));
-    variableList.push_back(VariableListItem("EX", false, "", "INPUT A REAL NUMBER FOR EXPERIENCE-?"));
-    variableList.push_back(VariableListItem("GR", false, "", "INPUT A REAL NUMBER FOR GPA-?"));
+    variableList.push_back(VariableListItem("DE", false, "", "INPUT YES OR NO FOR DEGREE: ", STRING));
+    variableList.push_back(VariableListItem("DI", false, "", "INPUT YES OR NO FOR DISCOVERY: ", STRING));
+    variableList.push_back(VariableListItem("EX", false, "", "INPUT A REAL NUMBER FOR EXPERIENCE: ", FLOAT));
+    variableList.push_back(VariableListItem("GR", false, "", "INPUT A REAL NUMBER FOR GPA: ", FLOAT));
 
     strcpy(variable_list[1], "DE");
     strcpy(variable_list[2], "DI");
     strcpy(variable_list[3], "EX");
     strcpy(variable_list[4], "GR");
 
-    /* enter variables as they appear in the if clauses.  a maximum of 3
-    variables per if statement.  if no more variables hit return key.
-    */
     strcpy(clause_variable_list[1], "DE");
     strcpy(clause_variable_list[5], "DE");
     strcpy(clause_variable_list[9], "DE");
@@ -187,7 +181,6 @@ BackwardChaining::BackwardChaining()
     strcpy(clause_variable_list[21], "QU");
     strcpy(clause_variable_list[22], "GR");
 }
-
 
 void BackwardChaining::runChaining()
 {
@@ -212,134 +205,134 @@ void BackwardChaining::runChaining()
 void BackwardChaining::chaining(int ruleNumberP)
 {
     ruleNumber = ruleNumberP;
-        do
+    do
+    {
+        pushOnConclusionStack(ruleNumber, 1); //ruleNumber will not be 0 here no matter what.
+
+        do // Resolve clauses as either instantiated or on conclusion list
         {
-            pushOnConclusionStack(ruleNumber, 1); //ruleNumber will not be 0 here no matter what.
+        b545:
+            clauseVariableListIter = getClauseVarListItem(conclusionStack.top().ruleNumber, conclusionStack.top().clauseNumber);
+            responseS = clause_variable_list[clauseVariableListIter];
+            strcpy(response, clause_variable_list[clauseVariableListIter]);
 
-            do // Resolve clauses as either instantiated or on conclusion list
+            if (responseS != "")
             {
-            b545:           
-                clauseVariableListIter = getClauseVarListItem(conclusionStack.top().ruleNumber, conclusionStack.top().clauseNumber);
-                responseS = clause_variable_list[clauseVariableListIter];
-                strcpy(response, clause_variable_list[clauseVariableListIter]);
 
-                if(responseS != "")
+                ruleNumber = findValInConclusionList(response, 1);
+                if (ruleNumber != 0)
                 {
-                    
-                    ruleNumber = findValInConclusionList(response, 1);
-                    if (ruleNumber != 0)
-                    {
-                        chaining(ruleNumber);
-                    }
-                    
-                    instantiate();
-                    
-                    if (!conclusionStack.empty())
-                    {
-                        conclusionStack.top().clauseNumber = conclusionStack.top().clauseNumber + 1;
-                    }
+                    chaining(ruleNumber);
                 }
 
-            } while (strcmp(response, "") != 0); //Resolve clauses
+                instantiate();
 
-            /*no more clauses check if part of statement */
-            if (!conclusionStack.empty())
-            {
-                ruleNumber = conclusionStack.top().ruleNumber;
-            }
-            validExpression = false;
-            /**** if then statements ****/
-            /* sample if parts of if then statements from
-                the position knowledge base */
-            switch (ruleNumber) 
-            {
-            case 1: if (strcmp(degree, "NO") == 0) validExpression = true;
-                break;
-            case 2: if (strcmp(degree, "YES") == 0) validExpression = true;
-                break;
-            case 3: if ((strcmp(degree, "YES") == 0) &&
-                (strcmp(discovery, "YES") == 0)) validExpression = true;
-                break;
-            case 4: if ((strcmp(qualify, "YES") == 0) &&
-                (gpa < 3.5) && (experience >= 2)) validExpression = true;
-                break;
-            case 5: if ((strcmp(qualify, "YES") == 0) &&
-                (gpa < 3.5) && (experience < 2)) validExpression = true;
-                break;
-            case 6: if ((strcmp(qualify, "YES") == 0) &&
-                (gpa >= 3.5)) validExpression = true;
-                break;
-            }
-            /* see if the then part should be invoked */
-            if (validExpression == false) 
-            {
-                /* failed..search rest of statements for
-                    same conclusion */
-                    /* get conclusion */
-                strcpy(response, conclusion_list[conclusionStack.top().ruleNumber]);
-                /* search for conclusion starting at the
-                    next statement number */
-                ruleNumber = findValInConclusionList(response, conclusionStack.top().ruleNumber + 1);
                 if (!conclusionStack.empty())
                 {
-                    conclusionStack.pop();
+                    conclusionStack.top().clauseNumber = conclusionStack.top().clauseNumber + 1;
                 }
             }
-            /* pop old conclusion and put on new one */
-        } while ((validExpression == false) && (ruleNumber != 0));  /* outer do-while loop */
 
-        if (ruleNumber != 0)
+        } while (strcmp(response, "") != 0); //Resolve clauses
+
+        /*no more clauses check if part of statement */
+        if (!conclusionStack.empty())
         {
-            /* if part true invoke then part */
-            /* then part of if-then statements from the
-            position knowledge base */
-            switch (ruleNumber) {
-            case 1: 
-                strcpy(position, "NO");
-                //cout << "PO=NO\n";
-                results = "No position offered.";
-                break;
-            case 2: 
-                strcpy(qualify, "YES");
-                //cout << "QU=YES\n";
-                results = "Candidate qualifies for a position.";
-                break;
-            case 3: 
-                strcpy(position, "YES");
-                //cout << "PO=RESEARCH\n";
-                results = "Offer a position in research.";
-                break;
-            case 4: 
-                strcpy(position, "YES");
-                //cout << "PO=SERVICE ENGINEER\n";
-                results = "Offer a service engineer position.";
-                break;
-            case 5: 
-                strcpy(position, "NO");
-                //cout << "PO=NO";
-                results = "No position offered.";
-                break;
-            case 6: 
-                strcpy(position, "YES");
-                //cout << "PO=PRODUCT ENGINEER\n";
-                results = "Offer a product engineer position.";
-                break;            
-            }
-            if (!conclusionStack.empty()) 
+            ruleNumber = conclusionStack.top().ruleNumber;
+        }
+        validExpression = false;
+        /**** if then statements ****/
+        /* sample if parts of if then statements from
+            the position knowledge base */
+        switch (ruleNumber)
+        {
+        case 1: if (strcmp(degree, "NO") == 0) validExpression = true;
+            break;
+        case 2: if (strcmp(degree, "YES") == 0) validExpression = true;
+            break;
+        case 3: if ((strcmp(degree, "YES") == 0) &&
+            (strcmp(discovery, "YES") == 0)) validExpression = true;
+            break;
+        case 4: if ((strcmp(qualify, "YES") == 0) &&
+            (gpa < 3.5) && (experience >= 2)) validExpression = true;
+            break;
+        case 5: if ((strcmp(qualify, "YES") == 0) &&
+            (gpa < 3.5) && (experience < 2)) validExpression = true;
+            break;
+        case 6: if ((strcmp(qualify, "YES") == 0) &&
+            (gpa >= 3.5)) validExpression = true;
+            break;
+        }
+        /* see if the then part should be invoked */
+        if (validExpression == false)
+        {
+            /* failed..search rest of statements for
+                same conclusion */
+                /* get conclusion */
+            strcpy(response, conclusion_list[conclusionStack.top().ruleNumber]);
+            /* search for conclusion starting at the
+                next statement number */
+            ruleNumber = findValInConclusionList(response, conclusionStack.top().ruleNumber + 1);
+            if (!conclusionStack.empty())
             {
                 conclusionStack.pop();
             }
-            if (conclusionStack.empty())
-            {
-                solutionFound = true;
-                //cout << "*** SUCCESS\n" << endl;
-            }
-            else 
-            {
-                conclusionStack.top().clauseNumber = conclusionStack.top().clauseNumber + 1;
-                goto b545;
-            }
         }
+        /* pop old conclusion and put on new one */
+    } while ((validExpression == false) && (ruleNumber != 0));  /* outer do-while loop */
+
+    if (ruleNumber != 0)
+    {
+        /* if part true invoke then part */
+        /* then part of if-then statements from the
+        position knowledge base */
+        switch (ruleNumber) {
+        case 1:
+            strcpy(position, "NO");
+            //cout << "PO=NO\n";
+            results = "No position offered.";
+            break;
+        case 2:
+            strcpy(qualify, "YES");
+            //cout << "QU=YES\n";
+            results = "Candidate qualifies for a position.";
+            break;
+        case 3:
+            strcpy(position, "YES");
+            //cout << "PO=RESEARCH\n";
+            results = "Offer a position in research.";
+            break;
+        case 4:
+            strcpy(position, "YES");
+            //cout << "PO=SERVICE ENGINEER\n";
+            results = "Offer a service engineer position.";
+            break;
+        case 5:
+            strcpy(position, "NO");
+            //cout << "PO=NO";
+            results = "No position offered.";
+            break;
+        case 6:
+            strcpy(position, "YES");
+            //cout << "PO=PRODUCT ENGINEER\n";
+            results = "Offer a product engineer position.";
+            break;
+        }
+        if (!conclusionStack.empty())
+        {
+            conclusionStack.pop();
+        }
+        if (conclusionStack.empty())
+        {
+            solutionFound = true;
+            //cout << "*** SUCCESS\n" << endl;
+        }
+        else
+        {
+            conclusionStack.top().clauseNumber = conclusionStack.top().clauseNumber + 1;
+            goto b545;
+        }
+    }
 
 }
 
@@ -387,24 +380,21 @@ bool BackwardChaining::validateStatement(int ruleNumber)
 }
 
 void BackwardChaining::pushOnConclusionStack(int ruleNumberP, int clauseNumberP)
-/* routine to push statement number (ruleNumber) and a clause number of 1 onto the
-conclusion stack which consists of the statement stack (statement_list) and the
-clause stack (clause_stack)..*/
 {
-    conclusionStack.push( ConclusionStackItem(ruleNumberP, clauseNumberP));
+    conclusionStack.push(ConclusionStackItem(ruleNumberP, clauseNumberP));
 }
 
 
-int BackwardChaining::findValInConclusionList(char conlusionToFind[], int startIndex) 
+int BackwardChaining::findValInConclusionList(char conlusionToFind[], int startIndex)
 {
-    
+
     startIndex--;
     int indexLocation = 0; // Not found = 0
     bool found = false;
 
     for (int curIndex = startIndex; curIndex < conclusionList.size() && (!found); curIndex++)
     {
-        if( conclusionList.at(curIndex) == conlusionToFind)
+        if (conclusionList.at(curIndex) == conlusionToFind)
         {
             indexLocation = curIndex;
             found = true;
@@ -436,7 +426,7 @@ variable list (varlt) contains the variable (response). */
        instantiate the variables below in the case statement */
         switch (curIter)
         {
-         case 1: cout << "INPUT YES OR NO FOR DEGREE-? ";
+        case 1: cout << "INPUT YES OR NO FOR DEGREE-? ";
             cin.getline(degree, 4);
             break;
         case 2: cout << "INPUT YES OR NO FOR DISCOVERY-? ";
@@ -465,12 +455,11 @@ void BackwardChaining::presentSolution()
     }
 }
 
-
 int main()
 {
     BackwardChaining bNewChain;
-    
+
     bNewChain.runChaining();
-    bNewChain.presentSolution(); 
+    bNewChain.presentSolution();
     return 0;
 }
