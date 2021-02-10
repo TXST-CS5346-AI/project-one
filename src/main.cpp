@@ -90,9 +90,11 @@ class BackChain
 public:
     void populateLists();
     void runBackwardChaining();
-    int findConclusionInStatements(string conclusionName, int startingIndex);
-    bool instantiateClause(ClauseItem & clause);
-    bool processConclusion(int conclusionLocation);
+    int findValidConclusionInStatements(string conclusionName, int startingIndex, string stringToMatch);
+    bool instantiatePremiseClause(ClauseItem & clause);
+    bool processConclusion(int conclusionLocation, string valueToMatch);
+    bool processPremiseList(Statement & statement, string stringToMatch);
+
 
     vector<Statement> statementList;
     vector<VariableListItem> variableList;
@@ -116,7 +118,7 @@ void BackChain::populateLists()
 
 }
 
-bool BackChain::processConclusion(int conclusionLocation )
+bool BackChain::processConclusion(int conclusionLocation, string valueToMatch)
 {
     int solution = 0;
     bool isValid = true;
@@ -124,46 +126,117 @@ bool BackChain::processConclusion(int conclusionLocation )
 
     for (int premiseIter = 1; (isValid && statementList.at(conclusionLocation).premiseList.size()); premiseIter++)
     {
-        conclusionLocation = findConclusionInStatements(statementList.at(conclusionLocation).premiseList.at(premiseIter).name, 1);
+        conclusionLocation = findValidConclusionInStatements(statementList.at(conclusionLocation).premiseList.at(premiseIter).name, 1, "");
         
         if (conclusionLocation != 0)
         {
-            isValid = processConclusion(conclusionLocation);
+            isValid = processConclusion(conclusionLocation, valueToMatch);
         }
         else
         {
-            isValid = instantiateClause(statementList.at(conclusionLocation).premiseList.at(premiseIter));
+            isValid = instantiatePremiseClause(statementList.at(conclusionLocation).premiseList.at(premiseIter));
         }
     }
 
     return isValid;
 }
 
-bool BackChain::instantiateClause(ClauseItem & clause)
+bool BackChain::processPremiseList(Statement & statement, string stringToMatch)
 {
+    int solution = 0;
     bool isValid = true;
+    int location = 0;
+    int conclusionLocation = 0;
+    string valueToMatch = "";
 
-    for (int clauseIter = 1; clauseIter < variableList.size(); clauseIter++)
-    {
+        for (int premiseIter = 1; (isValid && statement.premiseList.size()); premiseIter++)
+        {
+            //go through the entire list and see if there is a valid one
+            conclusionLocation = findValidConclusionInStatements(statementList.at(conclusionLocation).premiseList.at(premiseIter).name, 1,
+                                 statementList.at(conclusionLocation).premiseList.at(premiseIter).value);
 
-    }
+            //is a conclusion but not valid
+            if (conclusionLocation == -1)
+            {
+                isValid = false;
+            }
 
-    return isValid;
+            //is a conclusion and valid
+            if (conclusionLocation >= 0)
+            {
+                isValid = true;
+                //This may be partially wrong, might already have done this...
+                //valueToMatch = statementList.at(conclusionLocation).premiseList.at(premiseIter).value;
+                //isValid = processConclusion(conclusionLocation, valueToMatch);
+            }
+            
+            //not a conclusion
+            if(conclusionLocation == 0)
+            {
+                isValid = instantiatePremiseClause(statementList.at(conclusionLocation).premiseList.at(premiseIter));
+            }
+        }
 
+    return true;
 }
 
-int BackChain::findConclusionInStatements(string conclusionName, int startingIndex)
+bool BackChain::instantiatePremiseClause(ClauseItem & clause)
 {
-    int location = 0;
+    bool isValid = false;
     bool isFound = false;
 
-    for (int listIter = startingIndex; (!isFound && listIter < statementList.size()); listIter++)
+    for (int premiseClauseIter = 1; (!isFound && premiseClauseIter < variableList.size()); premiseClauseIter++)
     {
-        if (conclusionName == statementList.at(listIter).conclusion.name)
+        if (clause.name == variableList.at(premiseClauseIter).name)
         {
-            location = listIter;
             isFound = true;
+
+            if (!variableList.at(premiseClauseIter).instantiated)
+            {
+                cout << variableList.at(premiseClauseIter).description;
+                cin >> variableList.at(premiseClauseIter).value;
+            }
+
+            if (variableList.at(premiseClauseIter).value == clause.value)
+            {
+                //there will be another method call here, since we need more than just equal to comparisons.
+                isValid = true;
+            }
         }
+    }
+
+    return isValid;
+
+}
+
+int BackChain::findValidConclusionInStatements(string conclusionName, int startingIndex, string stringToMatch)
+{
+    int location = 0;
+    bool isConclusion = false;
+    bool isValid = false;
+
+
+    for (int conclusionIter = startingIndex; (conclusionIter < statementList.size() && !isValid ); conclusionIter++)
+    {
+        if (conclusionName == statementList.at(conclusionIter).conclusion.name)
+        {
+            isConclusion = true;
+            
+            if (stringToMatch != statementList.at(conclusionIter).conclusion.value || stringToMatch == "DONTCARE")
+            {
+                isValid = processPremiseList(statementList.at(conclusionIter), stringToMatch);
+
+                if (isValid)
+                {
+                    location = conclusionIter;
+                }
+            }
+        }
+    }
+
+    if (isConclusion && !isValid)
+    {
+        location = -1;
     }
 
     return location;
@@ -183,8 +256,6 @@ void BackChain::runBackwardChaining()
 {
     //TODO - need knowledge base representation
 
-    vector<string> conclusionList; // must align with knowledge base and clause variable list
-
     //no need for conclusion stack, will actually be the recursive stack
 
     string conclusionToSolve = "";
@@ -194,23 +265,26 @@ void BackChain::runBackwardChaining()
     cout << "Please enter a conclusion to solve: ";
     cin >> conclusionToSolve;
 
-    for (int curConclusionIter = 1; (curConclusionIter < conclusionList.size() && !isSolvedStatement); curConclusionIter++)
-    {
-        conclusionLocation = findConclusionInStatements(conclusionToSolve, curConclusionIter);
-        if (0 != conclusionLocation)
+        conclusionLocation = findValidConclusionInStatements(conclusionToSolve, 1, "DONTCARE");
+        
+        //is a conclusion but not valid
+        if (conclusionLocation == -1)
         {
-            isSolvedStatement = processConclusion(conclusionLocation);
+            cout << "conclusion is NOT valid";
         }
-    }
 
-    if (isSolvedStatement)
-    {
-        //do something with conclusionLocation        
-    }
-    else
-    {
-        cout << "No valid Solutions";
-    }
+        //is a conclusion and valid
+        if (conclusionLocation >= 0)
+        {
+
+            cout << "conclusion is valid";
+        }
+
+        //not a conclusion
+        if (conclusionLocation == 0)
+        {
+            cout << "no conclusion";
+        }
 
 }
 
