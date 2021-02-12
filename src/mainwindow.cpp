@@ -1,4 +1,4 @@
-#include <QtWidgets>
+/*#include <QtWidgets>
 
 #include "include\mainwindow.h"
 
@@ -96,3 +96,4 @@ void Mainwindow::createFormGroupBox()
     formGroupBox->setLayout(layout);
 }
 
+*/
