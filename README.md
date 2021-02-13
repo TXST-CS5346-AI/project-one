@@ -4,6 +4,11 @@ Artificial intelligence software to assist with diagnosing vehicle errors and da
 
 ## Building the application
 
+To build locally: 
+`make`
+`./all`
+
+
 ## Running the application
 
 ## References 

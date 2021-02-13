@@ -20,10 +20,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     src/main.cpp \
-    src/mainwindow.cpp
+    src/mainwindow.cpp\
+    src/BackChain.cpp\
+    src/ClauseItem.cpp\
+    src/KnowledgeBase.cpp\
+    src/Statement.cpp\
+    src/VariableListItem.cpp
 
 HEADERS += \
-    include/mainwindow.h
+    include/mainwindow.h\
+    include/BackChain.h\
+    include/ClauseItem.h\
+    include/KnowledgeBase.h\
+    include/Statement.h\
+    include/VariableListItem.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
