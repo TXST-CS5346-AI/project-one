@@ -7,11 +7,16 @@
 
 KnowledgeBase::KnowledgeBase()
 {
-   kBase.push_back(Statement());
+
+}
+
+bool KnowledgeBase::populateKnowledgeBase(std::string fileName)
+{
+    int status;
 
     std::string inputBuffer;
     std::ifstream inputFile;
-    inputFile.open("knowledgeBase.txt");
+    inputFile.open(fileName);
 
     if (inputFile)
     {
@@ -46,7 +51,6 @@ KnowledgeBase::KnowledgeBase()
     }
 }
 
-
 bool KnowledgeBase::isConclusionGood(Statement& lList, std::string iBuffer, std::string& listPremise)
 {
     ClauseItem nClause;
@@ -62,9 +66,29 @@ bool KnowledgeBase::isConclusionGood(Statement& lList, std::string iBuffer, std:
     if (indicatorLocation == -1)
         return false;
     lList.conclusion.name = listConclusion.substr(0, indicatorLocation);
+    
+    if (lList.conclusion.name.front() == ' ')
+    {
+        lList.conclusion.name = lList.conclusion.name.substr(1);
+    }
+    if (lList.conclusion.name.back() == ' ')
+    {
+        lList.conclusion.name = lList.conclusion.name.substr(0, lList.conclusion.name.size() - 1);
+    }
+
     lList.conclusion.value = listConclusion.substr(indicatorLocation + 1, listConclusion.size());
+    
+    if (lList.conclusion.value.front() == ' ')
+    {
+        lList.conclusion.value = lList.conclusion.value.substr(1);
+    }
+    if (lList.conclusion.value.back() == ' ')
+    {
+        lList.conclusion.value = lList.conclusion.value.substr(0, lList.conclusion.value.size() - 1);
+    }
+
     lList.conclusion.type = STRING;
-    lList.premiseList.push_back(ClauseItem());  // store blank premise in first one
+    
     std::cout << "Conclusion is good\n";
     return true;
 }
@@ -93,7 +117,23 @@ bool KnowledgeBase::arePremisesGood(Statement& lList, std::string listPremise)
         if (listLeft.size() == 0 || listRight.size() == 0)  // missing something
             return false;
         nClause.name = listRight;
+        if (nClause.name.front() == ' ')
+        {
+            nClause.name = nClause.name.substr(1);
+        }
+        if (nClause.name.back() == ' ')
+        {
+            nClause.name = nClause.name.substr(0, nClause.name.size() - 1);
+        }
         nClause.value = listLeft;
+        if (nClause.value.front() == ' ')
+        {
+            nClause.value = nClause.value.substr(1);
+        }
+        if (nClause.value.back() == ' ')
+        {
+            nClause.value = nClause.value.substr(0, nClause.value.size() - 1);
+        }
         nClause.type = STRING;
         lList.premiseList.push_back(nClause);
     } while (listPremise.size() != 0);

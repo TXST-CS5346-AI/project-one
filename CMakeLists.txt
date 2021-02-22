@@ -13,6 +13,7 @@ add_executable(project_one
         include/KnowledgeBase.h
         include/Statement.h
         include/VariableListItem.h
+        include/ForwardChain.h
         src/main.cpp
         src/mainwindow.cpp
         src/mainwindow.cpp
@@ -20,4 +21,5 @@ add_executable(project_one
         src/ClauseItem.cpp
         src/KnowledgeBase.cpp
         src/Statement.cpp
-        src/VariableListItem.cpp)
+        src/VariableListItem.cpp
+        src/ForwardChain.cpp)

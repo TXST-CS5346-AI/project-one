@@ -17,12 +17,9 @@ public:
     int findValidConclusionInStatements(std::string conclusionName, int startingIndex, std::string stringToMatch);
     bool instantiatePremiseClause(ClauseItem& clause);
     bool processPremiseList(Statement& statement, std::string stringToMatch);
+    void populateVariableList(std::string);
 
-
-    //Replaced knowledgeBase with ruleSystem.kBase
-    //std::vector<Statement> knowledgeBase;
     KnowledgeBase ruleSystem;
-
     std::vector<VariableListItem> variableList;
 };
 

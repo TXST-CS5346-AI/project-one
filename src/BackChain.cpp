@@ -14,45 +14,51 @@ using namespace std;
 void BackChain::populateLists()
 {
     ruleSystem.kBase.push_back(Statement());
+    //ruleSystem.populateKnowledgeBase("knowledgeBase.txt");
+    ruleSystem.populateKnowledgeBase("carKnowledgeBase.txt");
+
     variableList.push_back(VariableListItem("Empty", false, "", "This is an error string", STRING));
-    variableList.push_back(VariableListItem("DEGREE", false, "", "Do you have a degree YES or NO: ", STRING));
-    variableList.push_back(VariableListItem("DISCOVERY", false, "", "Do you have a discovery YES or NO: ", STRING));
-    variableList.push_back(VariableListItem("EXPERIENCE", false, "", "Enter years of experience: ", INT));
-    variableList.push_back(VariableListItem("GRADE", false, "", "Enter your GPA: ", INT));
 
-/*
-    vector<ClauseItem> pOne;
-    pOne.push_back(ClauseItem("NULL", "NULL", STRING));
-    pOne.push_back(ClauseItem("DEGREE", "NO", STRING));
-    vector<ClauseItem> pTwo;
-    pTwo.push_back(ClauseItem("NULL", "NULL", STRING));
-    pTwo.push_back(ClauseItem("DEGREE", "YES", STRING));
-    vector<ClauseItem> pThree;
-    pThree.push_back(ClauseItem("NULL", "NULL", STRING));
-    pThree.push_back(ClauseItem("DEGREE", "YES", STRING));
-    pThree.push_back(ClauseItem("DISCOVERY", "YES", STRING));
-    vector<ClauseItem> pFour;
-    pFour.push_back(ClauseItem("NULL", "NULL", STRING));
-    pFour.push_back(ClauseItem("QUALIFY", "YES", INT));
-    pFour.push_back(ClauseItem("GRADE", "2", INT));
-    pFour.push_back(ClauseItem("EXPERIENCE", "4", INT));
-    vector<ClauseItem> pFive;
-    pFive.push_back(ClauseItem("NULL", "NULL", STRING));
-    pFive.push_back(ClauseItem("QUALIFY", "YES", STRING));
-    pFive.push_back(ClauseItem("GRADE", "2", INT));
-    pFive.push_back(ClauseItem("EXPERIENCE", "1", INT));
-    vector<ClauseItem> pSix;
-    pSix.push_back(ClauseItem("NULL", "NULL", STRING));
-    pSix.push_back(ClauseItem("QUALIFY", "YES", STRING));
-    pSix.push_back(ClauseItem("GRADE", "4", INT));
+    populateVariableList("variablesList.csv");
 
-    ruleSystem.kBase.push_back(Statement(ClauseItem("POSITION", "NO", STRING), pOne));
-    ruleSystem.kBase.push_back(Statement(ClauseItem("QUALIFY", "YES", STRING), pTwo));
-    ruleSystem.kBase.push_back(Statement(ClauseItem("POSITION", "RESEARCH", STRING), pThree));
-    ruleSystem.kBase.push_back(Statement(ClauseItem("POSITION", "SERVICEENGINEER", STRING), pFour));
-    ruleSystem.kBase.push_back(Statement(ClauseItem("POSITION", "NO", STRING), pFive));
-    ruleSystem.kBase.push_back(Statement(ClauseItem("POSITION", "PRODUCTENGINEER", STRING), pSix));
-  */  
+}
+
+
+//TEMPORARY - THIS NEEDS TO HAVE SOME ERROR CHECKING - dTorr implemented to test things.
+void BackChain::populateVariableList(std::string fileName)
+{
+    string csvLine;
+
+    string name;
+    string prompt = " ";
+    int type = 1;
+    int startParseLocation = 0;
+    int endParseLocation = 0;
+
+    ifstream variableListFile;
+    variableListFile.open(fileName);
+    
+    while (!variableListFile.eof())
+    {
+        getline(variableListFile, csvLine);
+
+        startParseLocation = 0;
+        endParseLocation = csvLine.find(',', startParseLocation);
+        name = csvLine.substr(startParseLocation, endParseLocation);
+
+        cout << name << endl;
+
+        startParseLocation = endParseLocation + 1;
+        endParseLocation = csvLine.find(',', startParseLocation);
+        prompt = csvLine.substr(startParseLocation, endParseLocation);
+
+        startParseLocation = endParseLocation + 1;
+        endParseLocation = csvLine.find(',', startParseLocation);
+
+        variableList.push_back(VariableListItem(name, false, "", prompt, type));
+    }
+
+
 }
 
 bool BackChain::processPremiseList(Statement& statement, string stringToMatch)
@@ -79,11 +85,7 @@ bool BackChain::processPremiseList(Statement& statement, string stringToMatch)
         //is a conclusion and valid
         if (conclusionLocation > 0)
         {
-
             isValid = true;
-            //This may be partially wrong, might already have done this...
-            //valueToMatch = statementList.at(conclusionLocation).premiseList.at(premiseIter).value;
-            //isValid = processConclusion(conclusionLocation, valueToMatch);
         }
 
         //not a conclusion
@@ -156,6 +158,8 @@ int BackChain::findValidConclusionInStatements(string conclusionName, int starti
     return location;
 }
 
+
+//Need to replace couts...
 void BackChain::runBackwardChaining()
 {
     //TODO - need knowledge base representation
@@ -191,42 +195,3 @@ void BackChain::runBackwardChaining()
     }
 
 }
-
-
-/*
-void BackChain::runBackwardChaining()
-{
-    //TODO - need knowledge base representation
-
-    //no need for conclusion stack, will actually be the recursive stack
-
-    string conclusionToSolve = "";
-    int conclusionLocation = 0;
-    bool isSolvedStatement = false;
-
-    cout << "Please enter a conclusion to solve: ";
-    cin >> conclusionToSolve;
-
-    conclusionLocation = findValidConclusionInStatements(conclusionToSolve, 1, "DONTCARE");
-
-    //is a conclusion but not valid
-    if (conclusionLocation == -1)
-    {
-        cout << "conclusion is NOT valid";
-    }
-
-    //is a conclusion and valid
-    if (conclusionLocation > 0)
-    {
-        cout << "Result is " << knowledgeBase.at(conclusionLocation).conclusion.value << endl;
-        cout << "conclusion is valid";
-    }
-
-    //not a conclusion
-    if (conclusionLocation == 0)
-    {
-        cout << "no conclusion";
-    }
-
-}
-*/

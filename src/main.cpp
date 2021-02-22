@@ -8,6 +8,7 @@
 #include "ClauseItem.h"
 #include "Statement.h"
 #include "BackChain.h"
+#include "ForwardChain.h"
 #include "VariableListItem.h"
 
 using namespace std;
@@ -24,9 +25,17 @@ void displayResults(int conclusion)
 
 int main()
 {
+
+    //Need to separate MVC here...
     BackChain backChain;
     backChain.populateLists();
     backChain.runBackwardChaining();
     
+    //ForwardChain forwardChain;
+    //forwardChain.copyKnowledgeBase(backChain.ruleSystem);
+    //forwardChain.copyVariableList(backChain.variableList);
+    //forwardChain.runForwardChaining();
+
+
     return 0;
 }
