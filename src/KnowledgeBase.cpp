@@ -49,6 +49,8 @@ bool KnowledgeBase::populateKnowledgeBase(std::string fileName)
     else {
         std::cout << "Error reading file. " << std::endl;
     }
+
+    return true;
 }
 
 bool KnowledgeBase::isConclusionGood(Statement& lList, std::string iBuffer, std::string& listPremise)

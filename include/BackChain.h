@@ -15,8 +15,8 @@ public:
     void populateLists();
     void runBackwardChaining();
     int findValidConclusionInStatements(std::string conclusionName, int startingIndex, std::string stringToMatch);
-    bool instantiatePremiseClause(ClauseItem& clause);
-    bool processPremiseList(Statement& statement, std::string stringToMatch);
+    bool instantiatePremiseClause(const ClauseItem& clause);
+    bool processPremiseList(const Statement& statement, std::string stringToMatch);
     void populateVariableList(std::string);
 
     KnowledgeBase ruleSystem;
