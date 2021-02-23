@@ -15,16 +15,20 @@ using namespace std;
 // Member Function | BackChain | populateLists
 //
 // Summary: Populates the knowledge base and variable lists for the back
-//          chaining portion of the program.
+//          chaining portion of the program. Typically read from a csv or text
+//          file. Takes the outside representation of the knowledge base and
+//          allows the inference engine to act on it.
+//
 //================================================================================
 void BackChain::populateLists()
 {
     // To offest the vectors by 1, populate index 0 with NULL or Empty elements.
     ruleSystem.kBase.push_back(Statement());
     variableList.push_back(VariableListItem("Empty", false, "", "This is an error string", STRING));
+    intermediateConclusionList.push_back(VariableListItem("Empty", false, "", "This is an error string", STRING));
 
     // Populate the knowledge base and variable list. 
-    ruleSystem.populateKnowledgeBase("diagnoseKnowledgeBase.txt");
+    ruleSystem.populateKnowledgeBase("carKnowledgeBase.txt");
     populateVariableList("variablesList.csv");
 }
 
@@ -42,25 +46,32 @@ void BackChain::populateVariableList(std::string fileName)
 
     ifstream variableListFile;
     variableListFile.open(fileName);
-    
-    while (!variableListFile.eof())
+ 
+    if (variableListFile)
     {
-        getline(variableListFile, csvLine);
+        while (!variableListFile.eof())
+        {
+            getline(variableListFile, csvLine);
 
-        startParseLocation = 0;
-        endParseLocation = csvLine.find(',', startParseLocation);
-        name = csvLine.substr(startParseLocation, endParseLocation);
+            startParseLocation = 0;
+            endParseLocation = csvLine.find(',', startParseLocation);
+            name = csvLine.substr(startParseLocation, endParseLocation);
 
-        cout << name << endl;
+            cout << name << endl;
 
-        startParseLocation = endParseLocation + 1;
-        endParseLocation = csvLine.find(',', startParseLocation);
-        prompt = csvLine.substr(startParseLocation, endParseLocation);
+            startParseLocation = endParseLocation + 1;
+            endParseLocation = csvLine.find(',', startParseLocation);
+            prompt = csvLine.substr(startParseLocation, endParseLocation);
 
-        startParseLocation = endParseLocation + 1;
-        endParseLocation = csvLine.find(',', startParseLocation);
+            startParseLocation = endParseLocation + 1;
+            endParseLocation = csvLine.find(',', startParseLocation);
 
-        variableList.push_back(VariableListItem(name, false, "", prompt, type));
+            variableList.push_back(VariableListItem(name, false, "", prompt, type));
+        }
+    }
+    else
+    {
+        cout << "Could not fine the file" << endl;
     }
 
 
@@ -69,21 +80,20 @@ void BackChain::populateVariableList(std::string fileName)
 //================================================================================
 // Member Function | BackChain | processPremiseList
 //
-// Summary: Populates the knowledge base and variable lists for the back
-//          chaining portion of the program.
+// Summary: Processed the premise list of a given statement. This statement
+//          can lead to a recursive call if the statement contains a conclusion
+//          in its premise list.
 //
 // Preconditions:   The statement parameter was found to have a valid conclusion.
 //
 // Inputs:  Statement&  statement   :   An individual statement taken from the
 //                                      knowledge base. It typically includes 
 //                                      premise clauses that will be processed
-//                                      in order to see if 
-//  
-//          string      stringToMatch   :
-//
+//                                      in order to see if they are conclusions,
+//                                      premise clauses, or just invalid.
 //
 //================================================================================
-bool BackChain::processPremiseList(const Statement& statement, string stringToMatch)
+bool BackChain::processPremiseList(const Statement& statement)
 {
     int solution = 0;
     bool isValid = true;
@@ -96,7 +106,8 @@ bool BackChain::processPremiseList(const Statement& statement, string stringToMa
     for (int premiseIter = 1; (isValid && premiseIter < statement.premiseList.size()); premiseIter++)
     {
 
-        // Go through and if it is a conclusion, back chain with it. 
+        // Go through and if it is a conclusion on the premise side, 
+        // back chain with it. 
         // This will cause another recursive call by adding a conclusion 
         // to the stack. It is this step that allows the removal of the actual
         // stack in back chaining.
@@ -113,6 +124,11 @@ bool BackChain::processPremiseList(const Statement& statement, string stringToMa
         if (conclusionLocation > 0)
         {
             isValid = true;
+
+            // This step is not needed for the backward chaining portion. It is used
+            // when farward chaining is to immediately follow backward chaining and
+            // use values that have already been instantiated.
+            addToIntermediateConclusionList(statement.premiseList.at(premiseIter));
         }
 
         // It was not a conclusion. Go to the clause variable list and 
@@ -186,12 +202,26 @@ bool BackChain::instantiatePremiseClause(const ClauseItem& clause)
     return isValid;
 }
 
-
 //================================================================================
 // Member Function | BackChain | findValidConclusionInStatements
 //
-// Summary: Populates the knowledge base and variable lists for the back
-//          chaining portion of the program.
+// Summary: Takes a conclusion name and value and tries to find a statement
+//          that matches up to both. If it finds one and the recursive stack
+//          is done, that will be the solution. If the stack is not empty,
+//          that means that we just completed an intermediate step in the process.
+//
+// Inputs:  string  conclusionName: The name of a conclusion to match up to. Used
+//                                  As the first part in checking if a statement
+//                                  is valid or not.
+//          int     starting index: The first index location to begin searching
+//                                  from. Typically a 1, but can be adjusted.
+//          string  stringToMatch:  The value portion to be matched when searching
+//                                  for a valid conclusion. It will take on
+//                                  a value when this function is called
+//                                  recursively.
+//
+// Outputs: int location:   Specifies the location of a conclusion.
+//
 //================================================================================
 int BackChain::findValidConclusionInStatements(string conclusionName, int startingIndex, string stringToMatch)
 {
@@ -200,8 +230,8 @@ int BackChain::findValidConclusionInStatements(string conclusionName, int starti
     bool isValid = false;
 
     // This loop will go through the knowledge base and look for a matching 
-    // conclusion in all of the premises. It initially is not trying to 
-    // find a match to the conclusion, as the first inquiry will be 
+    // conclusion in all of the statements. It initially is not trying to 
+    // find a match to the conclusion value, as the first inquiry will be 
     // the open ended question that the user wants the system to solve.
     // It also begins at index 1 for the first run.
     for (int conclusionIter = startingIndex; (conclusionIter < ruleSystem.kBase.size() && !isValid); conclusionIter++)
@@ -224,7 +254,7 @@ int BackChain::findValidConclusionInStatements(string conclusionName, int starti
                 // value in the knowledge base. This needs to be fully processed.
                 // Process premiseList will do just that for this statement.
                 // If everything lines up, we are good.
-                isValid = processPremiseList(ruleSystem.kBase.at(conclusionIter), stringToMatch);
+                isValid = processPremiseList(ruleSystem.kBase.at(conclusionIter));
 
                 if (isValid)
                 {
@@ -254,8 +284,13 @@ int BackChain::findValidConclusionInStatements(string conclusionName, int starti
     return location;
 }
 
-
-//Need to replace couts...
+//================================================================================
+// Member Function | BackChain | runBackwardChaining
+//
+// Summary: The entry point for starting the backward chain process. Asks
+//          the user to enter the conclusion to solve and then runs.
+//
+//================================================================================
 void BackChain::runBackwardChaining()
 {
 
@@ -287,4 +322,26 @@ void BackChain::runBackwardChaining()
         cout << "no conclusion";
     }
 
+}
+
+//================================================================================
+// Member Function | BackChain | addToIntermediateConclusionList
+//
+// Summary: This function allows for intermediate conclusion clauses to be added
+//          to the forward chaining variable list. This is needed in order to
+//          run the forward chaining portion immediately after the backward
+//          chaining portion. It allows for all entries including the resolved
+//          intermediate conclusion clauses to be preserved. Note that the 
+//          description field is not specific. This is entered in here only to
+//          keep in line with the other entries. It will not actually be seen.
+//
+//================================================================================
+void BackChain::addToIntermediateConclusionList(const ClauseItem& intermediateConclusion)
+{
+    intermediateConclusionList.push_back(
+        VariableListItem(intermediateConclusion.name,
+            true,
+            intermediateConclusion.value,
+            (intermediateConclusion.name + "(y/n)"),
+            intermediateConclusion.type));
 }

@@ -14,11 +14,13 @@ class ForwardChain
 {
 public:
     void runForwardChaining();
-    bool instantiatePremiseClause(ClauseItem& clause);
+    bool instantiatePremiseClause(const ClauseItem& clause);
     bool processPremiseList(std::vector<ClauseItem>& premiseList);
     void copyVariableList(const std::vector<VariableListItem>& srcVariableList);
     void copyKnowledgeBase(const KnowledgeBase& srcKnowledgeBase);
     int getMatchingVariableListEntry(std::string entryName);
+    void addIntermediateConclusions(const std::vector<VariableListItem>& srcConclusionVariableList);
+    void processStatementIndex(int variableListEntry);
 
     std::queue<ClauseItem> conclusionVariableQueue;
 

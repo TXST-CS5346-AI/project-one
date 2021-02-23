@@ -26,15 +26,22 @@ void displayResults(int conclusion)
 int main()
 {
 
+    cout << "Welcome to the Automobile Diagnostic Program." << endl;
+    cout << "This is the server side of the program." << endl;
+    cout << "You can run this program in command line mode or with a GUI" << endl;
+    cout << "Select your option ( 1 - GUI mode, any other is command line mode): ";
+
+
     //Need to separate MVC here...
     BackChain backChain;
     backChain.populateLists();
     backChain.runBackwardChaining();
     
-    //ForwardChain forwardChain;
-    //forwardChain.copyKnowledgeBase(backChain.ruleSystem);
-    //forwardChain.copyVariableList(backChain.variableList);
-    //forwardChain.runForwardChaining();
+    ForwardChain forwardChain;
+    forwardChain.copyKnowledgeBase(backChain.ruleSystem);
+    forwardChain.copyVariableList(backChain.variableList);
+    forwardChain.addIntermediateConclusions(backChain.intermediateConclusionList);
+    forwardChain.runForwardChaining();
 
 
     return 0;
