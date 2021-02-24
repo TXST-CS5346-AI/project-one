@@ -23,6 +23,16 @@ void displayResults(int conclusion)
     }
 }
 
+void diagnose(BackChain& backChain)
+{
+    backChain.runBackwardChaining();
+}
+
+void repair(ForwardChain & forwardChain)
+{
+    forwardChain.runForwardChaining();
+}
+
 int main()
 {
 
@@ -35,14 +45,15 @@ int main()
     //Need to separate MVC here...
     BackChain backChain;
     backChain.populateLists();
-    backChain.runBackwardChaining();
-    
+
+    diagnose(backChain);
+
     ForwardChain forwardChain;
     forwardChain.copyKnowledgeBase(backChain.ruleSystem);
     forwardChain.copyVariableList(backChain.variableList);
     forwardChain.addIntermediateConclusions(backChain.intermediateConclusionList);
-    forwardChain.runForwardChaining();
 
+    repair(forwardChain);
 
     return 0;
 }

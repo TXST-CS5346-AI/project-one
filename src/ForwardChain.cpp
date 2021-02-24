@@ -92,13 +92,24 @@ void ForwardChain::runForwardChaining()
 {
     ClauseItem queueTopPtr;
     int variableListEntry;
+    int initialRepairEntry;
+
+    queueTopPtr.name = "inconclusive";
+    queueTopPtr.value = "no valid solution.";
 
     std::cout << std::endl << std::endl << "Now running forward chain" << std::endl;
 
-    // Need to determine start of our chain, perhaps just the is the car broken one...
-    // This will be removed when we get in our actual KB..
-    // Working on that right now...
-    conclusionVariableQueue.push(ClauseItem("has_issue", "y", STRING));
+    // Start the chain by looking for the very first prompt, does it have an issue.
+    // Note that this will also prevent forward chaining from running if the user 
+    // entered in a bad value to resolve while back chaining.
+    initialRepairEntry = getMatchingVariableListEntry("has_issue");
+
+    if (variableList.at(initialRepairEntry).instantiated)
+    {
+        conclusionVariableQueue.push(ClauseItem(variableList.at(initialRepairEntry).name,
+            variableList.at(initialRepairEntry).value,
+            variableList.at(initialRepairEntry).type));
+    }
 
     while (!conclusionVariableQueue.empty())
     {

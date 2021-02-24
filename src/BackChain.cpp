@@ -33,7 +33,17 @@ void BackChain::populateLists()
 }
 
 
-//TEMPORARY - THIS NEEDS TO HAVE SOME ERROR CHECKING - dTorr implemented to test things.
+//================================================================================
+// Member Function | BackChain | populateVariableList
+//
+// Summary: Populates the variable list for back chaining. This initial list 
+//          contains only the premises. Note that is is later passed on
+//          to forward chaining in a modified format. 
+//
+// Inputs: string fileName: The name of the file to read entries from. This file
+//                  is in a CSV format of name, prompt, type.
+//
+//================================================================================
 void BackChain::populateVariableList(std::string fileName)
 {
     string csvLine;
@@ -43,6 +53,7 @@ void BackChain::populateVariableList(std::string fileName)
     int type = 1;
     int startParseLocation = 0;
     int endParseLocation = 0;
+    bool isValid = true;
 
     ifstream variableListFile;
     variableListFile.open(fileName);
@@ -54,24 +65,43 @@ void BackChain::populateVariableList(std::string fileName)
             getline(variableListFile, csvLine);
 
             startParseLocation = 0;
-            endParseLocation = csvLine.find(',', startParseLocation);
+            endParseLocation = (csvLine.find(',', startParseLocation) - startParseLocation);
+            if(endParseLocation <= -1)
+            {
+                isValid = false;
+            }
             name = csvLine.substr(startParseLocation, endParseLocation);
 
             cout << name << endl;
 
             startParseLocation = endParseLocation + 1;
-            endParseLocation = csvLine.find(',', startParseLocation);
+            endParseLocation = (csvLine.find(',', startParseLocation) - startParseLocation);
+            if (endParseLocation <= -1)
+            {
+                isValid = false;
+            }
             prompt = csvLine.substr(startParseLocation, endParseLocation);
 
             startParseLocation = endParseLocation + 1;
-            endParseLocation = csvLine.find(',', startParseLocation);
+            endParseLocation = (csvLine.find(',', startParseLocation) - startParseLocation);
+            if (endParseLocation <= -1)
+            {
+                isValid = false;
+            }
 
-            variableList.push_back(VariableListItem(name, false, "", prompt, type));
+            if (isValid)
+            {
+                variableList.push_back(VariableListItem(name, false, "", prompt, type));
+            }
+            else
+            {
+                cout << "Invalid entry, line " << csvLine << " not added." << endl;
+            }
         }
     }
     else
     {
-        cout << "Could not fine the file" << endl;
+        cout << "Could not find the file" << endl;
     }
 
 
