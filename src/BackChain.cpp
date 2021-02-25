@@ -29,7 +29,7 @@ void BackChain::populateLists()
     intermediateConclusionList.push_back(VariableListItem("Empty", false, "", "This is an error string", STRING));
 
     // Populate the knowledge base and variable list. 
-    ruleSystem.populateKnowledgeBase("carKnowledgeBase.txt");
+    ruleSystem.populateKnowledgeBase("knowledgeBase.txt");
     populateVariableList("variablesList.csv");
 }
 
