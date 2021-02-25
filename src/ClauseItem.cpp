@@ -9,6 +9,7 @@
 #define STRING 2
 #define FLOAT 3
 
+
 //================================================================================
 // Constructor | ClauseItem | ClauseItem
 //
@@ -23,6 +24,7 @@ ClauseItem::ClauseItem()
     value = "NULL";
     type = STRING;
 }
+
 
 //================================================================================
 // Constructor | ClauseItem | ClauseItem
@@ -42,6 +44,7 @@ ClauseItem::ClauseItem(std::string nameP, std::string valueP, int typeP)
     value = valueP;
     type = typeP;
 }
+
 
 //================================================================================
 // Operator overload | ClauseItem | operator=

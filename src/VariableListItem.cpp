@@ -4,6 +4,7 @@
 #include "KnowledgeBase.h"
 #include "VariableListItem.h"
 
+
 //================================================================================
 // Constructor | VariableListItem | VariableListItem
 //
@@ -28,6 +29,7 @@ VariableListItem::VariableListItem(std::string nameP, bool instantiatedP, std::s
     type = typeP;
     statementIndex.push_back(-1); // To keep in line with the other indexes. But use -1 to note bad values
 }
+
 
 //================================================================================
 // CMember function | VariableListItem | populateAtatementIndex

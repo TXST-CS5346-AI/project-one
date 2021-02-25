@@ -1,5 +1,6 @@
 #include"Statement.h"
 
+
 //================================================================================
 // Constructor | Statement | Statement
 //
@@ -15,6 +16,7 @@ Statement::Statement()
     conclusion.type = STRING;
     premiseList.push_back(ClauseItem());
 }
+
 
 //================================================================================
 // Constructor | ClauseItem | ClauseItem

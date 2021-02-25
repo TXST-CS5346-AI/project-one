@@ -11,6 +11,7 @@
 
 using namespace std;
 
+
 //================================================================================
 // Member Function | BackChain | populateLists
 //
@@ -107,6 +108,7 @@ void BackChain::populateVariableList(std::string fileName)
 
 }
 
+
 //================================================================================
 // Member Function | BackChain | processPremiseList
 //
@@ -172,6 +174,7 @@ bool BackChain::processPremiseList(const Statement& statement)
     return isValid;
 }
 
+
 //================================================================================
 // Member Function | BackChain | instantiatePremiseClause
 //
@@ -231,6 +234,7 @@ bool BackChain::instantiatePremiseClause(const ClauseItem& clause)
     // One thing to note is that this is for an individual premise.
     return isValid;
 }
+
 
 //================================================================================
 // Member Function | BackChain | findValidConclusionInStatements
@@ -314,6 +318,7 @@ int BackChain::findValidConclusionInStatements(string conclusionName, int starti
     return location;
 }
 
+
 //================================================================================
 // Member Function | BackChain | runBackwardChaining
 //
@@ -353,6 +358,7 @@ void BackChain::runBackwardChaining()
     }
 
 }
+
 
 //================================================================================
 // Member Function | BackChain | addToIntermediateConclusionList

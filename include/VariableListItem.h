@@ -11,6 +11,7 @@ class VariableListItem
 public:
     VariableListItem(std::string nameP, bool instantiatedP, std::string valueP, std::string descriptionP, int typeP);
     void populateStatementIndex(const KnowledgeBase& knowledgeBase);
+    
     std::string name;
     bool instantiated;
     std::string value;

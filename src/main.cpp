@@ -46,6 +46,8 @@ int main()
     BackChain backChain;
     backChain.populateLists();
 
+
+
     diagnose(backChain);
 
     ForwardChain forwardChain;
