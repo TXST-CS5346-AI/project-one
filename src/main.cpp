@@ -4,6 +4,8 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <string.h>
+#include <cstdlib> 
 
 #include "ClauseItem.hpp"
 #include "Statement.hpp"
@@ -37,11 +39,13 @@ int main(int argc, char* argv[])
 {
 
     cout << "Welcome to the Automobile Diagnostic Program." << endl;
-    
-    if (argc == 2 && (argv[1] == "-h" || argv[1] == "-help")) 
+    cout << argc << endl; 
+ 
+    if (argc == 2 && (strcmp(argv[1], "-h") || strcmp(argv[1], "-help"))) 
     {
         cout << "To use this program, please read the instructions below and re-launch." << endl;
         cout << "Additional details for building and execution are also available in the README.md file." << endl;
+        return EXIT_SUCCESS;
     }
 
 
