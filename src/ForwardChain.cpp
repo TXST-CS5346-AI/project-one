@@ -11,18 +11,18 @@
 #include"KnowledgeBase.h"
 
 
-//================================================================================
-// Member Function | ForwardChain | copyVariableList
-//
-// Summary: Copies over all values that were used to find the backward chaining
-//          conclusion from the clause variable list. This is part one of two.
-//          The second part will also bring over the intermediate conclusions.
-//
-// Inputs:  const vector<VariableListItem>& srcVariableList:    The variable
-//                  list to be copied over. Each element is copied with the
-//                  current values instantiated by backward chaining.
-//
-//================================================================================
+/**
+ * Member Function | ForwardChain | copyVariableList
+ *
+ * Summary: Copies over all values that were used to find the backward chaining
+ *          conclusion from the clause variable list. This is part one of two.
+ *          The second part will also bring over the intermediate conclusions.
+ *
+ * @param  const vector<VariableListItem>& srcVariableList:    The variable
+ *                  list to be copied over. Each element is copied with the
+ *                  current values instantiated by backward chaining.
+ *
+ */
 void ForwardChain::copyVariableList
 (const std::vector<VariableListItem> & srcVariableList)
 {
@@ -36,19 +36,19 @@ void ForwardChain::copyVariableList
 }
 
 
-//================================================================================
-// Member Function | ForwardChain | addIntermediateConclusions
-//
-// Summary: Takes the intermediate conclusion list that was populated during
-//          backward chaining and adds it to the clause variable list. This is 
-//          needed due to forward chaining requiring all premise items to be in
-//          the clause variable list, which is different from backward chaining.
-//
-// Inputs:  const vector<VariableListItem>& srcConclusionVariableList:  The
-//                  additional conclusion variable list items to copy into the
-//                  forward chaining clause variable list.
-//
-//================================================================================
+/**
+ * Member Function | ForwardChain | addIntermediateConclusions
+ *
+ * Summary: Takes the intermediate conclusion list that was populated during
+ *          backward chaining and adds it to the clause variable list. This is 
+ *          needed due to forward chaining requiring all premise items to be in
+ *          the clause variable list, which is different from backward chaining.
+ *
+ * @param  const vector<VariableListItem>& srcConclusionVariableList:  The
+ *                  additional conclusion variable list items to copy into the
+ *                  forward chaining clause variable list.
+ *
+ */
 void ForwardChain::addIntermediateConclusions(const std::vector<VariableListItem>& srcConclusionVariableList)
 {
     //do start at 0 in this case, might as well copy over the NULL.
@@ -61,16 +61,16 @@ void ForwardChain::addIntermediateConclusions(const std::vector<VariableListItem
 }
 
 
-//================================================================================
-// Member Function | ForwardChain | copyKnowledgeBase
-//
-// Summary: Copy the internal representation of the knowledge base over to be used
-//          inforward chaining.
-//
-// Inputs:  const KnowledgeBase& srcKnowledgeBase:  The internal representation
-//          of the knowledge base to be used. Similar to what was done for 
-//          back chaining. 
-//================================================================================
+/**
+ * Member Function | ForwardChain | copyKnowledgeBase
+ *
+ * Summary: Copy the internal representation of the knowledge base over to be used
+ *          inforward chaining.
+ *
+ * @param  const KnowledgeBase& srcKnowledgeBase:  The internal representation
+ *          of the knowledge base to be used. Similar to what was done for 
+ *          back chaining. 
+ */
 void ForwardChain::copyKnowledgeBase(const KnowledgeBase& srcKnowledgeBase)
 {
     //do start at 0 in this case, might as well copy over the NULL.
@@ -81,13 +81,13 @@ void ForwardChain::copyKnowledgeBase(const KnowledgeBase& srcKnowledgeBase)
 }
 
 
-//================================================================================
-// Member Function | ForwardChain | runForwardChaining
-//
-// Summary: Entry point for running forward chaining. This is expected to run
-//          after backward chaining, as part of the suggested fix step.
-//
-//================================================================================
+/**
+ * Member Function | ForwardChain | runForwardChaining
+ *
+ * Summary: Entry point for running forward chaining. This is expected to run
+ *          after backward chaining, as part of the suggested fix step.
+ *
+ */
 void ForwardChain::runForwardChaining()
 {
     ClauseItem queueTopPtr;
@@ -146,22 +146,22 @@ void ForwardChain::runForwardChaining()
 }
 
 
-//================================================================================
-// Member Function | ForwardChain | processStatementIndex
-//
-// Summary: Runs through an inverted index of the current variable list entry and
-//          checks to see which statements are to be processed due to its value.
-//          This step is part of the BFS, where each matching item
-//          is added to the queue for this particular entry before it is 
-//          popped off the queue and the next one is processed.
-//
-//  Inputs: int variableListEntry: A numeric value of which variable list entry 
-//          is being processed. 
-//
-//  Outputs:    None - note that this is indeed the case since the queue will be 
-//              added to if there is a valid value. If it is not valid, it is not
-//              added.
-//================================================================================
+ /**
+ * Member Function | ForwardChain | processStatementIndex
+ *
+ * Summary: Runs through an inverted index of the current variable list entry and
+ *          checks to see which statements are to be processed due to its value.
+ *          This step is part of the BFS, where each matching item
+ *          is added to the queue for this particular entry before it is 
+ *          popped off the queue and the next one is processed.
+ *
+ *  @param int variableListEntry: A numeric value of which variable list entry 
+ *          is being processed. 
+ *
+ *  @return    None - note that this is indeed the case since the queue will be 
+ *              added to if there is a valid value. If it is not valid, it is not
+ *              added.
+ */
 void ForwardChain::processStatementIndex(int variableListEntry)
 {
     int curStatement = 0;
@@ -180,21 +180,21 @@ void ForwardChain::processStatementIndex(int variableListEntry)
 }
 
 
-//================================================================================
-// Member Function | ForwardChain | processPremiseList
-//
-// Summary: Takes a conclusion name and value and tries to find a statement
-//          that matches up to both. If it finds one and the recursive stack
-//          is done, that will be the solution. If the stack is not empty,
-//          that means that we just completed an intermediate step in the process.
-//
-// Inputs:  vector<ClauseItem>& premiseList: the premise list of a particular
-//                      statement.
-//
-// Outputs: bool isValid: Specifies if the premise clauses were all found
-//                  to be valid for a particular statement..
-//
-//================================================================================
+/**
+ * Member Function | ForwardChain | processPremiseList
+ *
+ * Summary: Takes a conclusion name and value and tries to find a statement
+ *          that matches up to both. If it finds one and the recursive stack
+ *          is done, that will be the solution. If the stack is not empty,
+ *          that means that we just completed an intermediate step in the process.
+ *
+ * @param  vector<ClauseItem>& premiseList: the premise list of a particular
+ *                      statement.
+ *
+ * @return bool isValid: Specifies if the premise clauses were all found
+ *                  to be valid for a particular statement..
+ *
+ */
 bool ForwardChain::processPremiseList(std::vector<ClauseItem>& premiseList)
 {
     bool isValid = true;
@@ -207,24 +207,24 @@ bool ForwardChain::processPremiseList(std::vector<ClauseItem>& premiseList)
 }
 
 
-//================================================================================
-// Member Function | ForwardChain | instantiatePremiseClause
-//
-// Summary: Takes a single clause and verifies that it has been instantiated and
-//          that it matches up to the back chaining portion of diagnostics.
-//          Note that this varies slightly from back chaining and the typical
-//          behavior of the instantiation step.
-//
-// Preconditions: Backchaining has been ran and the variable list is populated
-//                  with the needed results.
-//
-// Inputs:  string  conclusionName: The name of a conclusion to match up to. Used
-//                                  As the first part in checking if a statement
-//                                  is valid or not.
-//
-// Outputs: isFound:    Specifies if the incoming clause is found within the 
-//                      variable list. 
-//================================================================================
+/**
+ * Member Function | ForwardChain | instantiatePremiseClause
+ *
+ * Summary: Takes a single clause and verifies that it has been instantiated and
+ *          that it matches up to the back chaining portion of diagnostics.
+ *          Note that this varies slightly from back chaining and the typical
+ *          behavior of the instantiation step.
+ *
+ * Preconditions: Backchaining has been ran and the variable list is populated
+ *                  with the needed results.
+ *
+ * @param  string  conclusionName: The name of a conclusion to match up to. Used
+ *                                  As the first part in checking if a statement
+ *                                  is valid or not.
+ *
+ * @return isFound:    Specifies if the incoming clause is found within the 
+ *                      variable list. 
+ */
 bool ForwardChain::instantiatePremiseClause(const ClauseItem& clause)
 {
     bool isFound = false;
@@ -244,19 +244,19 @@ bool ForwardChain::instantiatePremiseClause(const ClauseItem& clause)
 }
 
 
-//================================================================================
-// Member Function | ForwardChain | getMatchingVariableListEntry
-//
-// Summary: Takes a conclusion name that was popped off of the queue and tries to 
-//          locate it in the variable list. Note that the variable list will only
-//          contain unique values.
-//
-// Inputs:  string entryName: The name of the variable list entry to match up.
-//
-// Outputs: int matchingEntryIndex: The location of the matching entry. Returns
-//                  -1 if it is not found.
-//
-//================================================================================
+/**
+ * Member Function | ForwardChain | getMatchingVariableListEntry
+ *
+ * Summary: Takes a conclusion name that was popped off of the queue and tries to 
+ *          locate it in the variable list. Note that the variable list will only
+ *          contain unique values.
+ *
+ * @param  string entryName: The name of the variable list entry to match up.
+ *
+ * @return int matchingEntryIndex: The location of the matching entry. Returns
+ *                  -1 if it is not found.
+ *
+ */
 int ForwardChain::getMatchingVariableListEntry(std::string entryName)
 {
     int matchingEntryIndex = -1;

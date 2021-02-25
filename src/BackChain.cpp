@@ -12,15 +12,14 @@
 using namespace std;
 
 
-//================================================================================
-// Member Function | BackChain | populateLists
-//
-// Summary: Populates the knowledge base and variable lists for the back
-//          chaining portion of the program. Typically read from a csv or text
-//          file. Takes the outside representation of the knowledge base and
-//          allows the inference engine to act on it.
-//
-//================================================================================
+/**
+ * Member Function | BackChain | populateLists
+ *
+ * Summary: Populates the knowledge base and variable lists for the back
+ *          chaining portion of the program. Typically read from a csv or text
+ *          file. Takes the outside representation of the knowledge base and
+ *          allows the inference engine to act on it.
+ */
 void BackChain::populateLists()
 {
     // To offest the vectors by 1, populate index 0 with NULL or Empty elements.
@@ -34,17 +33,17 @@ void BackChain::populateLists()
 }
 
 
-//================================================================================
-// Member Function | BackChain | populateVariableList
-//
-// Summary: Populates the variable list for back chaining. This initial list 
-//          contains only the premises. Note that is is later passed on
-//          to forward chaining in a modified format. 
-//
-// Inputs: string fileName: The name of the file to read entries from. This file
-//                  is in a CSV format of name, prompt, type.
-//
-//================================================================================
+/**
+ * Member Function | BackChain | populateVariableList
+ *
+ * Summary: Populates the variable list for back chaining. This initial list 
+ *          contains only the premises. Note that is is later passed on
+ *          to forward chaining in a modified format. 
+ *
+ * @param string fileName: The name of the file to read entries from. This file
+ *                  is in a CSV format of name, prompt, type.
+ *
+ */
 void BackChain::populateVariableList(std::string fileName)
 {
     string csvLine;
@@ -109,22 +108,22 @@ void BackChain::populateVariableList(std::string fileName)
 }
 
 
-//================================================================================
-// Member Function | BackChain | processPremiseList
-//
-// Summary: Processed the premise list of a given statement. This statement
-//          can lead to a recursive call if the statement contains a conclusion
-//          in its premise list.
-//
-// Preconditions:   The statement parameter was found to have a valid conclusion.
-//
-// Inputs:  Statement&  statement   :   An individual statement taken from the
-//                                      knowledge base. It typically includes 
-//                                      premise clauses that will be processed
-//                                      in order to see if they are conclusions,
-//                                      premise clauses, or just invalid.
-//
-//================================================================================
+/**
+ * Member Function | BackChain | processPremiseList
+ *
+ * Summary: Processed the premise list of a given statement. This statement
+ *          can lead to a recursive call if the statement contains a conclusion
+ *          in its premise list.
+ *
+ * Preconditions:   The statement parameter was found to have a valid conclusion.
+ *
+ * @param Statement& statement   :   An individual statement taken from the
+ *                                      knowledge base. It typically includes 
+ *                                      premise clauses that will be processed
+ *                                      in order to see if they are conclusions,
+ *                                      premise clauses, or just invalid.
+ *
+ */
 bool BackChain::processPremiseList(const Statement& statement)
 {
     int solution = 0;
@@ -175,25 +174,25 @@ bool BackChain::processPremiseList(const Statement& statement)
 }
 
 
-//================================================================================
-// Member Function | BackChain | instantiatePremiseClause
-//
-// Summary: Checks to see if the single premise clause passed in has a matching
-//          value to what exists in the clause variable list. If not, ask for
-//          a value and then check.
-//
-// Postcondition:   The clause variable list, if it matches, will have the
-//                  matching entry instantiated.
-//
-// Inputs:  const ClauseItem& clause:   An individual premise clause. Contains
-//                                      a name and potentially a value.
-//
-// Outputs: bool isValid:   Returns if the individual premise clause was found
-//                          to be valid by matching the name and value of the
-//                          premise clause in the knowledge base to what is
-//                          in the clause variable list.
-//
-//================================================================================
+/**
+ * Member Function | BackChain | instantiatePremiseClause
+ *
+ * Summary: Checks to see if the single premise clause passed in has a matching
+ *          value to what exists in the clause variable list. If not, ask for
+ *          a value and then check.
+ *
+ * Postcondition:   The clause variable list, if it matches, will have the
+ *                  matching entry instantiated.
+ *
+ * @param  const ClauseItem& clause:   An individual premise clause. Contains
+ *                                      a name and potentially a value.
+ *
+ * @return bool isValid:   Returns if the individual premise clause was found
+ *                          to be valid by matching the name and value of the
+ *                          premise clause in the knowledge base to what is
+ *                          in the clause variable list.
+ *
+ */
 bool BackChain::instantiatePremiseClause(const ClauseItem& clause)
 {
     bool isValid = false;
@@ -236,27 +235,27 @@ bool BackChain::instantiatePremiseClause(const ClauseItem& clause)
 }
 
 
-//================================================================================
-// Member Function | BackChain | findValidConclusionInStatements
-//
-// Summary: Takes a conclusion name and value and tries to find a statement
-//          that matches up to both. If it finds one and the recursive stack
-//          is done, that will be the solution. If the stack is not empty,
-//          that means that we just completed an intermediate step in the process.
-//
-// Inputs:  string  conclusionName: The name of a conclusion to match up to. Used
-//                                  As the first part in checking if a statement
-//                                  is valid or not.
-//          int     starting index: The first index location to begin searching
-//                                  from. Typically a 1, but can be adjusted.
-//          string  stringToMatch:  The value portion to be matched when searching
-//                                  for a valid conclusion. It will take on
-//                                  a value when this function is called
-//                                  recursively.
-//
-// Outputs: int location:   Specifies the location of a conclusion.
-//
-//================================================================================
+/**
+ * Member Function | BackChain | findValidConclusionInStatements
+ *
+ * Summary: Takes a conclusion name and value and tries to find a statement
+ *          that matches up to both. If it finds one and the recursive stack
+ *          is done, that will be the solution. If the stack is not empty,
+ *          that means that we just completed an intermediate step in the process.
+ *
+ * @param string conclusionName: The name of a conclusion to match up to. Used
+ *                                  As the first part in checking if a statement
+ *                                  is valid or not.
+ * @param int startingIndex: The first index location to begin searching
+ *                                  from. Typically a 1, but can be adjusted.
+ *          string  stringToMatch:  The value portion to be matched when searching
+ *                                  for a valid conclusion. It will take on
+ *                                  a value when this function is called
+ *                                  recursively.
+ *
+ * @return int location:   Specifies the location of a conclusion.
+ *
+ */
 int BackChain::findValidConclusionInStatements(string conclusionName, int startingIndex, string stringToMatch)
 {
     int location = 0;
@@ -300,15 +299,15 @@ int BackChain::findValidConclusionInStatements(string conclusionName, int starti
         }
     }
 
-    // There are actually three options here. -1 means that the conclusion name
-    // was found, but it was not valid. This could happen if there is a bad
-    // knowledge base or perhaps the user entered in a bad value, such as an x
-    // instead of a y or n.
-    //
-    // The second option is 0, which means there was no match, no nothing.
-    // This can happen if the user enters in a bad inquiry to start.
-    //
-    // The third option is the actual index of where a valid conclusion was found.
+    /* There are actually three options here. -1 means that the conclusion name
+    * was found, but it was not valid. This could happen if there is a bad
+    * knowledge base or perhaps the user entered in a bad value, such as an x
+    * instead of a y or n.
+    *
+    * The second option is 0, which means there was no match, no nothing.
+    * This can happen if the user enters in a bad inquiry to start.
+    *
+    */ The third option is the actual index of where a valid conclusion was found.
     if (isConclusion && !isValid)
     {
         location = -1;
@@ -319,13 +318,13 @@ int BackChain::findValidConclusionInStatements(string conclusionName, int starti
 }
 
 
-//================================================================================
-// Member Function | BackChain | runBackwardChaining
-//
-// Summary: The entry point for starting the backward chain process. Asks
-//          the user to enter the conclusion to solve and then runs.
-//
-//================================================================================
+/**
+ * Member Function | BackChain | runBackwardChaining
+ *
+ * Summary: The entry point for starting the backward chain process. Asks
+ *          the user to enter the conclusion to solve and then runs.
+ *
+ */
 void BackChain::runBackwardChaining()
 {
 
@@ -360,18 +359,18 @@ void BackChain::runBackwardChaining()
 }
 
 
-//================================================================================
-// Member Function | BackChain | addToIntermediateConclusionList
-//
-// Summary: This function allows for intermediate conclusion clauses to be added
-//          to the forward chaining variable list. This is needed in order to
-//          run the forward chaining portion immediately after the backward
-//          chaining portion. It allows for all entries including the resolved
-//          intermediate conclusion clauses to be preserved. Note that the 
-//          description field is not specific. This is entered in here only to
-//          keep in line with the other entries. It will not actually be seen.
-//
-//================================================================================
+/**
+ * Member Function | BackChain | addToIntermediateConclusionList
+ *
+ * Summary: This function allows for intermediate conclusion clauses to be added
+ *          to the forward chaining variable list. This is needed in order to
+ *          run the forward chaining portion immediately after the backward
+ *          chaining portion. It allows for all entries including the resolved
+ *          intermediate conclusion clauses to be preserved. Note that the 
+ *          description field is not specific. This is entered in here only to
+ *          keep in line with the other entries. It will not actually be seen.
+ *
+ */
 void BackChain::addToIntermediateConclusionList(const ClauseItem& intermediateConclusion)
 {
     intermediateConclusionList.push_back(
