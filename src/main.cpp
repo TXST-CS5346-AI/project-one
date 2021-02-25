@@ -57,6 +57,6 @@ int main()
 
     repair(forwardChain);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
