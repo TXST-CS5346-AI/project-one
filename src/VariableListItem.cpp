@@ -1,8 +1,8 @@
 #include <vector>
 #include <string>
 
-#include "KnowledgeBase.h"
-#include "VariableListItem.h"
+#include "KnowledgeBase.hpp"
+#include "VariableListItem.hpp"
 
 
 /**

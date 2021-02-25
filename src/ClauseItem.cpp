@@ -1,6 +1,6 @@
 #include <string>
 
-#include "ClauseItem.h"
+#include "ClauseItem.hpp"
 
 // These defines are used throughout the program to specify what type of clause
 // is being processed. The current implementation is all strings. As such, they

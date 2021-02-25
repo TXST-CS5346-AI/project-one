@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>
 
-#include "Statement.h"
-#include "KnowledgeBase.h"
+#include "Statement.hpp"
+#include "KnowledgeBase.hpp"
 
 
 KnowledgeBase::KnowledgeBase()

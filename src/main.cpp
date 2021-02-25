@@ -5,11 +5,11 @@
 #include <fstream>
 #include <vector>
 
-#include "ClauseItem.h"
-#include "Statement.h"
-#include "BackChain.h"
-#include "ForwardChain.h"
-#include "VariableListItem.h"
+#include "ClauseItem.hpp"
+#include "Statement.hpp"
+#include "BackChain.hpp"
+#include "ForwardChain.hpp"
+#include "VariableListItem.hpp"
 
 using namespace std;
 
@@ -33,13 +33,16 @@ void repair(ForwardChain & forwardChain)
     forwardChain.runForwardChaining();
 }
 
-int main()
+int main(int argc, char* argv[])
 {
 
     cout << "Welcome to the Automobile Diagnostic Program." << endl;
-    cout << "This is the server side of the program." << endl;
-    cout << "You can run this program in command line mode or with a GUI" << endl;
-    cout << "Select your option ( 1 - GUI mode, any other is command line mode): ";
+    
+    if (argc == 2 && (argv[1] == "-h" || argv[1] == "-help")) 
+    {
+        cout << "To use this program, please read the instructions below and re-launch." << endl;
+        cout << "Additional details for building and execution are also available in the README.md file." << endl;
+    }
 
 
     //Need to separate MVC here...

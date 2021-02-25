@@ -3,11 +3,11 @@
 #include <iostream>
 #include <fstream>
 
-#include "ClauseItem.h"
-#include "VariableListItem.h"
-#include "Statement.h"
-#include "BackChain.h"
-#include "KnowledgeBase.h"
+#include "ClauseItem.hpp"
+#include "VariableListItem.hpp"
+#include "Statement.hpp"
+#include "BackChain.hpp"
+#include "KnowledgeBase.hpp"
 
 using namespace std;
 
@@ -307,7 +307,8 @@ int BackChain::findValidConclusionInStatements(string conclusionName, int starti
     * The second option is 0, which means there was no match, no nothing.
     * This can happen if the user enters in a bad inquiry to start.
     *
-    */ The third option is the actual index of where a valid conclusion was found.
+    * The third option is the actual index of where a valid conclusion was found.
+    */
     if (isConclusion && !isValid)
     {
         location = -1;
