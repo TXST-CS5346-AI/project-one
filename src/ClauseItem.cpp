@@ -33,9 +33,9 @@ ClauseItem::ClauseItem()
  *          the pattern of Name = Value. The type parameter is for future use.
  *          All types are currently set to type string.
  *
- * Inputs:  string nameP:   The name portion of the clause.
- *          string valueP:  The value portion of the clause.
- *          int typeP:      The type of clause that it is.
+ * @param string nameP:   The name portion of the clause.
+ * @param string valueP:  The value portion of the clause.
+ * @param int typeP:      The type of clause that it is.
  *
  */
 ClauseItem::ClauseItem(std::string nameP, std::string valueP, int typeP)
@@ -51,7 +51,7 @@ ClauseItem::ClauseItem(std::string nameP, std::string valueP, int typeP)
  *
  * Summary: Overloaded equals operator to copy over one clause to another.
  *
- * Inputs:  const ClauseItem& srcClause:    The clause that holds the name,
+ * @param const ClauseItem& srcClause:    The clause that holds the name,
  *                                          value and type to be copied into the
  *                                          new clause.
  *
