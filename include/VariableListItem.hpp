@@ -21,3 +21,4 @@ public:
 };
 
 #endif // !VARIABLE_LIST_ITEM_H
+

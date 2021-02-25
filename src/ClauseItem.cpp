@@ -62,3 +62,4 @@ void ClauseItem::operator=(const ClauseItem& srcClause)
     value = srcClause.value;
     type = srcClause.type;
 }
+

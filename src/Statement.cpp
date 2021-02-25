@@ -35,3 +35,4 @@ Statement::Statement(ClauseItem conclusionP, std::vector<ClauseItem>& premiseLis
     conclusion = conclusionP;
     premiseList = premiseListP;
 }
+

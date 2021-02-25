@@ -273,3 +273,4 @@ int ForwardChain::getMatchingVariableListEntry(std::string entryName)
 
     return matchingEntryIndex;
 }
+

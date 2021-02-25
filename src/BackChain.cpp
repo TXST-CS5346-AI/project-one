@@ -380,3 +380,4 @@ void BackChain::addToIntermediateConclusionList(const ClauseItem& intermediateCo
             (intermediateConclusion.name + "(y/n)"),
             intermediateConclusion.type));
 }
+

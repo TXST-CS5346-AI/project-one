@@ -58,3 +58,4 @@ void VariableListItem::populateStatementIndex(const KnowledgeBase& knowledgeBase
         }
     }
 }
+

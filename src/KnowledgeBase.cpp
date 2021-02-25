@@ -174,3 +174,4 @@ std::string KnowledgeBase::getPremise(unsigned int it, unsigned int it1)
 {
     return kBase.at(it).premiseList.at(it1).name;
 }
+
