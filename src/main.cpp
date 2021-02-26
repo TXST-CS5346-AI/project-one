@@ -1,9 +1,7 @@
 #pragma warning(disable : 4996)
 
 #include <iostream>
-#include <string>
-#include <fstream>
-#include <vector>
+#include <fstream> 
 #include <string.h>
 #include <cstdlib> 
 
@@ -13,15 +11,13 @@
 #include "ForwardChain.hpp"
 #include "VariableListItem.hpp"
 
-using namespace std;
-
 void displayResults(int conclusion)
 {
     // find the appropriate result string from the knowledge base 
     // and display it.
     if (0 == conclusion)
     {
-        cout << "No conclusion was able to be made.";
+        std::cout << "No conclusion was able to be made.";
     }
 }
 
@@ -71,16 +67,17 @@ void repair(ForwardChain& forwardChain)
 int main(int argc, char* argv[])
 {
 
-    cout << "Welcome to the Automobile Diagnostic Program." << endl;
-    cout << argc << endl; 
+    std::cout << "Welcome to the Automobile Diagnostic Program." << std::endl;
+    std::cout << "Authors: David Torrente, Randall Henderson, Borislav Sabotinov" << std::endl;
+    std::cout << argc << std::endl; 
  
     if (argc == 2 && (strcmp(argv[1], "-h") || strcmp(argv[1], "-help"))) 
     {
-        cout << "To use this program, please read the instructions below and re-launch." << endl;
-        cout << "Additional details for building and execution are also available in the README.md file." << endl;
-        cout << "First, the variablesList.csv and knowledgeBase.txt files will be processed to create an instance of the knowledge base
-        cout << "Next, the user will be prompted for a conclusion to solve." << endl;
-        cout << "Valid choices are: issue, repair." << endl;
+        std::cout << "To use this program, please read the instructions below and re-launch." << std::endl;
+        std::cout << "Additional details for building and execution are also available in the README.md file." << std::endl;
+        std::cout << "First, the variablesList.csv and knowledgeBase.txt files will be processed to create an instance of the knowledge base" << std::endl;
+        std::cout << "Next, the user will be prompted for a conclusion to solve." << std::endl;
+        std::cout << "Valid choices are: issue, repair." << std::endl;
 
         return EXIT_SUCCESS;
     }

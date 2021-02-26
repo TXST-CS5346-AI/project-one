@@ -1,5 +1,3 @@
-#include <string>
-
 #include "ClauseItem.hpp"
 
 // These defines are used throughout the program to specify what type of clause

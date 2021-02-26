@@ -1,13 +1,6 @@
 #include <iostream>
-#include <string>
-#include <vector>
-#include <queue>
 
 #include "ForwardChain.hpp"
-#include "Statement.hpp"
-#include "VariableListItem.hpp"
-#include "ClauseItem.hpp"
-#include "KnowledgeBase.hpp"
 
 /**
  * Member Function | ForwardChain | copyVariableList

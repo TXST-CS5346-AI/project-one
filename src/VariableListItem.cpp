@@ -1,7 +1,6 @@
 #include <vector>
 #include <string>
 
-#include "KnowledgeBase.hpp"
 #include "VariableListItem.hpp"
 
 

@@ -1,15 +1,9 @@
-#include <vector>
-#include <string>
 #include <iostream>
 #include <fstream>
 
 #include "ClauseItem.hpp"
-#include "VariableListItem.hpp"
-#include "Statement.hpp"
 #include "BackChain.hpp"
-#include "KnowledgeBase.hpp"
 
-using namespace std;
 
 /**
  * Member Function | BackChain | populateLists
@@ -44,16 +38,16 @@ void BackChain::populateLists()
  */
 void BackChain::populateVariableList(std::string fileName)
 {
-    string csvLine;
+    std::string csvLine;
 
-    string name;
-    string prompt = " ";
+    std::string name;
+    std::string prompt = " ";
     int type = 1;
     int startParseLocation = 0;
     int endParseLocation = 0;
     bool isValid = true;
 
-    ifstream variableListFile;
+    std::ifstream variableListFile;
     variableListFile.open(fileName);
 
     if (variableListFile)
@@ -70,7 +64,7 @@ void BackChain::populateVariableList(std::string fileName)
             }
             name = csvLine.substr(startParseLocation, endParseLocation);
 
-            cout << name << endl;
+            std::cout << name << std::endl;
 
             startParseLocation = endParseLocation + 1;
             endParseLocation = (csvLine.find(',', startParseLocation) - startParseLocation);
@@ -93,13 +87,13 @@ void BackChain::populateVariableList(std::string fileName)
             }
             else
             {
-                cout << "Invalid entry, line " << csvLine << " not added." << endl;
+                std::cout << "Invalid entry, line " << csvLine << " not added." << std::endl;
             }
         }
     }
     else
     {
-        cout << "Could not find the file" << endl;
+        std::cout << "Could not find the file" << std::endl;
     }
 }
 
@@ -125,7 +119,7 @@ bool BackChain::processPremiseList(const Statement &statement)
     bool isValid = true;
     int location = 0;
     int conclusionLocation = 0;
-    string valueToMatch = "";
+    std::string valueToMatch = "";
 
     // Process the premise list for a conclusion that was found to be valid.
     for (int premiseIter = 1; (isValid && premiseIter < statement.premiseList.size()); premiseIter++)
@@ -248,7 +242,7 @@ bool BackChain::instantiatePremiseClause(const ClauseItem &clause)
  * @return int location:   Specifies the location of a conclusion.
  *
  */
-int BackChain::findValidConclusionInStatements(string conclusionName, int startingIndex, string stringToMatch)
+int BackChain::findValidConclusionInStatements(std::string conclusionName, int startingIndex, std::string stringToMatch)
 {
     int location = 0;
     bool isConclusion = false;
@@ -291,7 +285,8 @@ int BackChain::findValidConclusionInStatements(string conclusionName, int starti
         }
     }
 
-    /* There are actually three options here. -1 means that the conclusion name
+    /*
+    * There are actually three options here. -1 means that the conclusion name
     * was found, but it was not valid. This could happen if there is a bad
     * knowledge base or perhaps the user entered in a bad value, such as an x
     * instead of a y or n.
@@ -320,32 +315,32 @@ int BackChain::findValidConclusionInStatements(string conclusionName, int starti
 void BackChain::runBackwardChaining()
 {
 
-    string conclusionToSolve = "";
+    std::string conclusionToSolve = "";
     int conclusionLocation = 0;
     bool isSolvedStatement = false;
 
-    cout << "Please enter a conclusion to solve (values can be: issue, repair): ";
-    cin >> conclusionToSolve;
+    std::cout << "Please enter a conclusion to solve (values can be: issue, repair): ";
+    std::cin >> conclusionToSolve;
 
     conclusionLocation = findValidConclusionInStatements(conclusionToSolve, 1, "DONTCARE");
 
     //is a conclusion but not valid
     if (conclusionLocation == -1)
     {
-        cout << "conclusion is NOT valid";
+        std::cout << "conclusion is NOT valid";
     }
     
     //is a conclusion and valid
     if (conclusionLocation > 0)
     {
-        cout << "Result is " << ruleSystem.kBase.at(conclusionLocation).conclusion.value << endl;
-        cout << "conclusion is valid";
+        std::cout << "Result is " << ruleSystem.kBase.at(conclusionLocation).conclusion.value << std::endl;
+        std::cout << "conclusion is valid";
     }
 
     //not a conclusion
     if (conclusionLocation == 0)
     {
-        cout << "no conclusion";
+        std::cout << "no conclusion";
     }
 }
 
