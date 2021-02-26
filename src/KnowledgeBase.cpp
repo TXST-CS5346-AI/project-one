@@ -7,10 +7,28 @@
 
 KnowledgeBase::KnowledgeBase()
 {
-
+    std::cout << "Creating knowledge base....." << std::endl;
 }
 
-bool KnowledgeBase::populateKnowledgeBase(std::string fileName)
+/**
+ * populateKnowledgeBase - reads in a data file and creates the knowledge base (KB) 
+ * accordingly, provided the right format is used. 
+ * File format example
+ * issue = Failure to Start ^ has_fuel = n : repair = Insufficient Fuel, Add more fuel.
+ *
+ * = is used to separate variable and value
+ * ^ is logical AND
+ * : separates clause and conclusion
+ *
+ * The above example should be read as follows. If issue is equal to failure to start, and has fuel is false
+ * then repair conclusion equals "Insufficient Fuel, Add more fuel." 
+ *
+ * @param string fileName - the name of the file containing the knowledge base. knowledgeBase.txt
+ *
+ * @return none
+ *
+ */
+void KnowledgeBase::populateKnowledgeBase(std::string fileName)
 {
     int status;
 
@@ -47,10 +65,9 @@ bool KnowledgeBase::populateKnowledgeBase(std::string fileName)
         }
     }
     else {
-        std::cout << "Error reading file. " << std::endl;
+        throw std::runtime_error("Error reading Knowledge Base (KB) file. Please validate it uses the correct format. Invoke application with -h or -help for details.");
     }
 
-    return true;
 }
 
 bool KnowledgeBase::isConclusionGood(Statement& lList, std::string iBuffer, std::string& listPremise)

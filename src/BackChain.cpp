@@ -324,7 +324,7 @@ void BackChain::runBackwardChaining()
     int conclusionLocation = 0;
     bool isSolvedStatement = false;
 
-    cout << "Please enter a conclusion to solve: ";
+    cout << "Please enter a conclusion to solve (values can be: issue, repair): ";
     cin >> conclusionToSolve;
 
     conclusionLocation = findValidConclusionInStatements(conclusionToSolve, 1, "DONTCARE");
@@ -334,7 +334,7 @@ void BackChain::runBackwardChaining()
     {
         cout << "conclusion is NOT valid";
     }
-
+    
     //is a conclusion and valid
     if (conclusionLocation > 0)
     {
@@ -370,3 +370,4 @@ void BackChain::addToIntermediateConclusionList(const ClauseItem &intermediateCo
                          (intermediateConclusion.name + "(y/n)"),
                          intermediateConclusion.type));
 }
+
