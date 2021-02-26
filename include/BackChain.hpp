@@ -7,7 +7,7 @@
 #include "Statement.hpp"
 #include "VariableListItem.hpp"
 #include "ClauseItem.hpp"
-#include"KnowledgeBase.hpp"
+#include "KnowledgeBase.hpp"
 
 class BackChain
 {

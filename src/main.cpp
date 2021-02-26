@@ -25,16 +25,49 @@ void displayResults(int conclusion)
     }
 }
 
+/**
+ * diagnose - as per project requirements, diagnose function emplyes Backward chaining
+ * This is how we allow for diagnosing what issue the vehicle has. 
+ *
+ * @param BackChain& backChain - a BackChain instance
+ *
+ * @return none
+ *
+ */
 void diagnose(BackChain& backChain)
 {
     backChain.runBackwardChaining();
 }
 
-void repair(ForwardChain & forwardChain)
+
+/**
+ * repair - as per project requirements, repair function employs Forward Chaining
+ * This is how we recommend a repair given an issue. 
+ *
+ * @param ForwardChain& forwardChain
+ *
+ * @return none
+ */
+void repair(ForwardChain& forwardChain)
 {
     forwardChain.runForwardChaining();
 }
 
+
+/**
+ * main - main function which serves as the entry point into the application.
+ * User will be greeted with a welcome message. 
+ *
+ * If they invoke the program with -h or -help, a help menu with a set of instructions will 
+ * be printed to the console. It is also recommended to review the README.md file in the project 
+ * root directory. 
+ *
+ * @param int argc - the count of the number of command line arguments provided
+ * @param char* argv[] - array holding the arguments provided during program invocation  
+ *
+ * @return EXIT_SUCCESS 0 
+ *
+ */
 int main(int argc, char* argv[])
 {
 
@@ -45,14 +78,16 @@ int main(int argc, char* argv[])
     {
         cout << "To use this program, please read the instructions below and re-launch." << endl;
         cout << "Additional details for building and execution are also available in the README.md file." << endl;
+        cout << "First, the variablesList.csv and knowledgeBase.txt files will be processed to create an instance of the knowledge base
+        cout << "Next, the user will be prompted for a conclusion to solve." << endl;
+        cout << "Valid choices are: issue, repair." << endl;
+
         return EXIT_SUCCESS;
     }
 
 
-    //Need to separate MVC here...
     BackChain backChain;
     backChain.populateLists();
-
 
 
     diagnose(backChain);

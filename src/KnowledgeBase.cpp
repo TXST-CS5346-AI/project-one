@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <stdexcept>
 
 #include "Statement.hpp"
 #include "KnowledgeBase.hpp"
