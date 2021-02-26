@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "ClauseItem.h"
+#include "ClauseItem.hpp"
 
 class Statement
 {

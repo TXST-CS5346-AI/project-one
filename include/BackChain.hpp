@@ -4,10 +4,10 @@
 #include <string>
 #include <vector>
 
-#include "Statement.h"
-#include "VariableListItem.h"
-#include "ClauseItem.h"
-#include"KnowledgeBase.h"
+#include "Statement.hpp"
+#include "VariableListItem.hpp"
+#include "ClauseItem.hpp"
+#include"KnowledgeBase.hpp"
 
 class BackChain
 {

@@ -4,8 +4,8 @@
 #include <vector>
 #include <string>
 
-#include "ClauseItem.h"
-#include "Statement.h"
+#include "ClauseItem.hpp"
+#include "Statement.hpp"
 
 
 class KnowledgeBase 
