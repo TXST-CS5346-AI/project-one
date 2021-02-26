@@ -11,7 +11,6 @@
 
 using namespace std;
 
-
 /**
  * Member Function | BackChain | populateLists
  *
@@ -27,11 +26,10 @@ void BackChain::populateLists()
     variableList.push_back(VariableListItem("Empty", false, "", "This is an error string", STRING));
     intermediateConclusionList.push_back(VariableListItem("Empty", false, "", "This is an error string", STRING));
 
-    // Populate the knowledge base and variable list. 
+    // Populate the knowledge base and variable list.
     ruleSystem.populateKnowledgeBase("knowledgeBase.txt");
     populateVariableList("variablesList.csv");
 }
-
 
 /**
  * Member Function | BackChain | populateVariableList
@@ -57,7 +55,7 @@ void BackChain::populateVariableList(std::string fileName)
 
     ifstream variableListFile;
     variableListFile.open(fileName);
- 
+
     if (variableListFile)
     {
         while (!variableListFile.eof())
@@ -66,7 +64,7 @@ void BackChain::populateVariableList(std::string fileName)
 
             startParseLocation = 0;
             endParseLocation = (csvLine.find(',', startParseLocation) - startParseLocation);
-            if(endParseLocation <= -1)
+            if (endParseLocation <= -1)
             {
                 isValid = false;
             }
@@ -103,10 +101,7 @@ void BackChain::populateVariableList(std::string fileName)
     {
         cout << "Could not find the file" << endl;
     }
-
-
 }
-
 
 /**
  * Member Function | BackChain | processPremiseList
@@ -124,7 +119,7 @@ void BackChain::populateVariableList(std::string fileName)
  *                                      premise clauses, or just invalid.
  *
  */
-bool BackChain::processPremiseList(const Statement& statement)
+bool BackChain::processPremiseList(const Statement &statement)
 {
     int solution = 0;
     bool isValid = true;
@@ -132,18 +127,17 @@ bool BackChain::processPremiseList(const Statement& statement)
     int conclusionLocation = 0;
     string valueToMatch = "";
 
-
     // Process the premise list for a conclusion that was found to be valid.
     for (int premiseIter = 1; (isValid && premiseIter < statement.premiseList.size()); premiseIter++)
     {
 
-        // Go through and if it is a conclusion on the premise side, 
-        // back chain with it. 
-        // This will cause another recursive call by adding a conclusion 
+        // Go through and if it is a conclusion on the premise side,
+        // back chain with it.
+        // This will cause another recursive call by adding a conclusion
         // to the stack. It is this step that allows the removal of the actual
         // stack in back chaining.
         conclusionLocation = findValidConclusionInStatements(statement.premiseList.at(premiseIter).name, 1,
-            statement.premiseList.at(premiseIter).value);
+                                                             statement.premiseList.at(premiseIter).value);
 
         // It is a conclusion but not valid
         if (conclusionLocation == -1)
@@ -162,7 +156,7 @@ bool BackChain::processPremiseList(const Statement& statement)
             addToIntermediateConclusionList(statement.premiseList.at(premiseIter));
         }
 
-        // It was not a conclusion. Go to the clause variable list and 
+        // It was not a conclusion. Go to the clause variable list and
         // check if it is instantiated as well as what the value was.
         if (conclusionLocation == 0)
         {
@@ -172,7 +166,6 @@ bool BackChain::processPremiseList(const Statement& statement)
 
     return isValid;
 }
-
 
 /**
  * Member Function | BackChain | instantiatePremiseClause
@@ -193,7 +186,7 @@ bool BackChain::processPremiseList(const Statement& statement)
  *                          in the clause variable list.
  *
  */
-bool BackChain::instantiatePremiseClause(const ClauseItem& clause)
+bool BackChain::instantiatePremiseClause(const ClauseItem &clause)
 {
     bool isValid = false;
     bool isFound = false;
@@ -228,12 +221,11 @@ bool BackChain::instantiatePremiseClause(const ClauseItem& clause)
             }
         }
     }
-    
+
     // The premise clause we just looked at will either be good or bad.
     // One thing to note is that this is for an individual premise.
     return isValid;
 }
-
 
 /**
  * Member Function | BackChain | findValidConclusionInStatements
@@ -262,9 +254,9 @@ int BackChain::findValidConclusionInStatements(string conclusionName, int starti
     bool isConclusion = false;
     bool isValid = false;
 
-    // This loop will go through the knowledge base and look for a matching 
-    // conclusion in all of the statements. It initially is not trying to 
-    // find a match to the conclusion value, as the first inquiry will be 
+    // This loop will go through the knowledge base and look for a matching
+    // conclusion in all of the statements. It initially is not trying to
+    // find a match to the conclusion value, as the first inquiry will be
     // the open ended question that the user wants the system to solve.
     // It also begins at index 1 for the first run.
     for (int conclusionIter = startingIndex; (conclusionIter < ruleSystem.kBase.size() && !isValid); conclusionIter++)
@@ -280,10 +272,10 @@ int BackChain::findValidConclusionInStatements(string conclusionName, int starti
             // Note the DONTCARE here. This allows the initial inquiry to go through
             // Since it is open ended. However, if not DONTCARE, the stringToMatch
             // Parameter that was passed in must match. This is due to the multi
-            // purposing of this function. 
+            // purposing of this function.
             if (stringToMatch == ruleSystem.kBase.at(conclusionIter).conclusion.value || stringToMatch == "DONTCARE")
             {
-                // It matched the conclusion name (above) and now it also matched the 
+                // It matched the conclusion name (above) and now it also matched the
                 // value in the knowledge base. This needs to be fully processed.
                 // Process premiseList will do just that for this statement.
                 // If everything lines up, we are good.
@@ -317,7 +309,6 @@ int BackChain::findValidConclusionInStatements(string conclusionName, int starti
     // See comment right above this one for info on this return value.
     return location;
 }
-
 
 /**
  * Member Function | BackChain | runBackwardChaining
@@ -356,9 +347,7 @@ void BackChain::runBackwardChaining()
     {
         cout << "no conclusion";
     }
-
 }
-
 
 /**
  * Member Function | BackChain | addToIntermediateConclusionList
@@ -372,13 +361,12 @@ void BackChain::runBackwardChaining()
  *          keep in line with the other entries. It will not actually be seen.
  *
  */
-void BackChain::addToIntermediateConclusionList(const ClauseItem& intermediateConclusion)
+void BackChain::addToIntermediateConclusionList(const ClauseItem &intermediateConclusion)
 {
     intermediateConclusionList.push_back(
         VariableListItem(intermediateConclusion.name,
-            true,
-            intermediateConclusion.value,
-            (intermediateConclusion.name + "(y/n)"),
-            intermediateConclusion.type));
+                         true,
+                         intermediateConclusion.value,
+                         (intermediateConclusion.name + "(y/n)"),
+                         intermediateConclusion.type));
 }
-

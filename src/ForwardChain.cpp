@@ -10,7 +10,6 @@
 #include "ClauseItem.hpp"
 #include "KnowledgeBase.hpp"
 
-
 /**
  * Member Function | ForwardChain | copyVariableList
  *
@@ -23,8 +22,7 @@
  *                  current values instantiated by backward chaining.
  *
  */
-void ForwardChain::copyVariableList
-(const std::vector<VariableListItem> & srcVariableList)
+void ForwardChain::copyVariableList(const std::vector<VariableListItem> &srcVariableList)
 {
     //do start at 0 in this case, might as well copy over the NULL.
     for (int varListiter = 0; varListiter < srcVariableList.size(); varListiter++)
@@ -32,9 +30,7 @@ void ForwardChain::copyVariableList
         variableList.push_back(srcVariableList.at(varListiter));
         variableList.back().populateStatementIndex(ruleSystem);
     }
-
 }
-
 
 /**
  * Member Function | ForwardChain | addIntermediateConclusions
@@ -49,7 +45,7 @@ void ForwardChain::copyVariableList
  *                  forward chaining clause variable list.
  *
  */
-void ForwardChain::addIntermediateConclusions(const std::vector<VariableListItem>& srcConclusionVariableList)
+void ForwardChain::addIntermediateConclusions(const std::vector<VariableListItem> &srcConclusionVariableList)
 {
     //do start at 0 in this case, might as well copy over the NULL.
     for (int conclListIter = 0; conclListIter < srcConclusionVariableList.size(); conclListIter++)
@@ -57,9 +53,7 @@ void ForwardChain::addIntermediateConclusions(const std::vector<VariableListItem
         variableList.push_back(srcConclusionVariableList.at(conclListIter));
         variableList.back().populateStatementIndex(ruleSystem);
     }
-
 }
-
 
 /**
  * Member Function | ForwardChain | copyKnowledgeBase
@@ -71,7 +65,7 @@ void ForwardChain::addIntermediateConclusions(const std::vector<VariableListItem
  *          of the knowledge base to be used. Similar to what was done for 
  *          back chaining. 
  */
-void ForwardChain::copyKnowledgeBase(const KnowledgeBase& srcKnowledgeBase)
+void ForwardChain::copyKnowledgeBase(const KnowledgeBase &srcKnowledgeBase)
 {
     //do start at 0 in this case, might as well copy over the NULL.
     for (int kBaseIter = 0; kBaseIter < srcKnowledgeBase.kBase.size(); kBaseIter++)
@@ -79,7 +73,6 @@ void ForwardChain::copyKnowledgeBase(const KnowledgeBase& srcKnowledgeBase)
         ruleSystem.kBase.push_back(srcKnowledgeBase.kBase.at(kBaseIter));
     }
 }
-
 
 /**
  * Member Function | ForwardChain | runForwardChaining
@@ -97,30 +90,31 @@ void ForwardChain::runForwardChaining()
     queueTopPtr.name = "inconclusive";
     queueTopPtr.value = "no valid solution.";
 
-    std::cout << std::endl << std::endl << "Now running forward chain" << std::endl;
+    std::cout << std::endl
+              << std::endl
+              << "Now running forward chain" << std::endl;
 
     // Start the chain by looking for the very first prompt, does it have an issue.
-    // Note that this will also prevent forward chaining from running if the user 
+    // Note that this will also prevent forward chaining from running if the user
     // entered in a bad value to resolve while back chaining.
     initialRepairEntry = getMatchingVariableListEntry("has_issue");
 
     if (variableList.at(initialRepairEntry).instantiated)
     {
         conclusionVariableQueue.push(ClauseItem(variableList.at(initialRepairEntry).name,
-            variableList.at(initialRepairEntry).value,
-            variableList.at(initialRepairEntry).type));
+                                                variableList.at(initialRepairEntry).value,
+                                                variableList.at(initialRepairEntry).type));
     }
 
     while (!conclusionVariableQueue.empty())
     {
         queueTopPtr = conclusionVariableQueue.front();
         std::cout << "Processing " << queueTopPtr.name << std::endl;
-        // Note that this is the only location where the queue is reduced. 
+        // Note that this is the only location where the queue is reduced.
         conclusionVariableQueue.pop();
 
         //get the matching entry in the variable list, the value does not matter at this time.
         variableListEntry = getMatchingVariableListEntry(queueTopPtr.name);
-
 
         //go through the variable list's inverted index of statements and push any valid conclusions.
         //make sure to prompt for entry of any non instantiated.
@@ -129,7 +123,7 @@ void ForwardChain::runForwardChaining()
         if (variableListEntry != -1)
         {
             processStatementIndex(variableListEntry);
-/*            for (int variableListIter = 1; variableListIter < variableList.at(variableListEntry).statementIndex.size(); variableListIter++)
+            /*            for (int variableListIter = 1; variableListIter < variableList.at(variableListEntry).statementIndex.size(); variableListIter++)
             {
                 //           = The matching variable list entry  . The individual statment number
                 curStatement = variableList.at(variableListEntry).statementIndex.at(variableListIter);
@@ -145,8 +139,7 @@ void ForwardChain::runForwardChaining()
     std::cout << "The final conclusion is " << queueTopPtr.name << " with a value of " << queueTopPtr.value << std::endl;
 }
 
-
- /**
+/**
  * Member Function | ForwardChain | processStatementIndex
  *
  * Summary: Runs through an inverted index of the current variable list entry and
@@ -172,13 +165,12 @@ void ForwardChain::processStatementIndex(int variableListEntry)
         curStatement = variableList.at(variableListEntry).statementIndex.at(variableListIter);
         if (true == processPremiseList(ruleSystem.kBase.at(curStatement).premiseList))
         {
-            // Everything matched up, so move forward on adding it to the queue to be 
-            // processed. 
+            // Everything matched up, so move forward on adding it to the queue to be
+            // processed.
             conclusionVariableQueue.push(ruleSystem.kBase.at(curStatement).conclusion);
         }
     }
 }
-
 
 /**
  * Member Function | ForwardChain | processPremiseList
@@ -195,7 +187,7 @@ void ForwardChain::processStatementIndex(int variableListEntry)
  *                  to be valid for a particular statement..
  *
  */
-bool ForwardChain::processPremiseList(std::vector<ClauseItem>& premiseList)
+bool ForwardChain::processPremiseList(std::vector<ClauseItem> &premiseList)
 {
     bool isValid = true;
 
@@ -205,7 +197,6 @@ bool ForwardChain::processPremiseList(std::vector<ClauseItem>& premiseList)
     }
     return isValid;
 }
-
 
 /**
  * Member Function | ForwardChain | instantiatePremiseClause
@@ -225,16 +216,14 @@ bool ForwardChain::processPremiseList(std::vector<ClauseItem>& premiseList)
  * @return isFound:    Specifies if the incoming clause is found within the 
  *                      variable list. 
  */
-bool ForwardChain::instantiatePremiseClause(const ClauseItem& clause)
+bool ForwardChain::instantiatePremiseClause(const ClauseItem &clause)
 {
     bool isFound = false;
 
     // Look through the variable list and see if this particular clause has a valid match.
-    for (int varListIter = 1; ( !isFound && varListIter < variableList.size()); varListIter++)
+    for (int varListIter = 1; (!isFound && varListIter < variableList.size()); varListIter++)
     {
-        if (variableList.at(varListIter).instantiated
-            && clause.name == variableList.at(varListIter).name
-            && clause.value == variableList.at(varListIter).value)
+        if (variableList.at(varListIter).instantiated && clause.name == variableList.at(varListIter).name && clause.value == variableList.at(varListIter).value)
         {
             isFound = true;
         }
@@ -242,7 +231,6 @@ bool ForwardChain::instantiatePremiseClause(const ClauseItem& clause)
 
     return isFound;
 }
-
 
 /**
  * Member Function | ForwardChain | getMatchingVariableListEntry
@@ -267,10 +255,9 @@ int ForwardChain::getMatchingVariableListEntry(std::string entryName)
         if (entryName == variableList.at(variableListIter).name)
         {
             isFound = true;
-            matchingEntryIndex = variableListIter; 
+            matchingEntryIndex = variableListIter;
         }
     }
 
     return matchingEntryIndex;
 }
-
