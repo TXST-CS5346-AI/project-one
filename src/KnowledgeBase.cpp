@@ -7,7 +7,7 @@
 
 KnowledgeBase::KnowledgeBase()
 {
-    std::cout << "Creating knowledge base....." << std::endl;
+    std::cout << "\nCreating knowledge base instance..." << std::endl;
 }
 
 /**
@@ -52,16 +52,16 @@ void KnowledgeBase::populateKnowledgeBase(std::string fileName)
                 {
                     if (arePremisesGood(lList, listPremise))
                     {
-                        std::cout << "Conclusion and premise(s) are good => List has been Updated\n";
+                        std::cout << "Conclusion and premise(s) are good => List Updated\n";
                         kBase.push_back(lList);
                     }
                     else
-                        std::cout << "Premise List is formatted incorrectly.  List has not been updated\n";
+                        std::cout << "Premise List is formatted incorrectly.  List NOT updated\n";
                 }
                 else
-                    std::cout << "Conclusion is formatted incorrectly.  List has not been updated\n";
+                    std::cout << "Conclusion is formatted incorrectly.  List NOT updated\n";
             }
-            std::cout << "Next item\n\n";
+            std::cout << std::endl; 
         }
     }
     else {
@@ -107,8 +107,9 @@ bool KnowledgeBase::isConclusionGood(Statement& lList, std::string iBuffer, std:
     }
 
     lList.conclusion.type = STRING;
-    
-    std::cout << "Conclusion is good\n";
+    conclusionSet.insert(lList.conclusion.name); // add conclusion to set, maintaining unique list of conclusions
+
+    std::cout << "Conclusion is good; ";
     return true;
 }
 
@@ -156,7 +157,7 @@ bool KnowledgeBase::arePremisesGood(Statement& lList, std::string listPremise)
         nClause.type = STRING;
         lList.premiseList.push_back(nClause);
     } while (listPremise.size() != 0);
-    std::cout << "Premise list is good!  " << lList.premiseList.size() - 1 << " premises has/have been loaded\n";
+    std::cout << "Premise list is good!  " << lList.premiseList.size() - 1 << " premise(s) loaded\n";
     return true;
 }
 
