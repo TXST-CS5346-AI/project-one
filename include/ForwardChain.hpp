@@ -5,10 +5,10 @@
 #include <vector>
 #include <queue>
 
-#include "Statement.h"
-#include "VariableListItem.h"
-#include "ClauseItem.h"
-#include"KnowledgeBase.h"
+#include "Statement.hpp"
+#include "VariableListItem.hpp"
+#include "ClauseItem.hpp"
+#include "KnowledgeBase.hpp"
 
 class ForwardChain
 {
@@ -28,8 +28,7 @@ private:
     void processStatementIndex(int variableListEntry);
     bool instantiatePremiseClause(const ClauseItem& clause);
     bool processPremiseList(std::vector<ClauseItem>& premiseList);
-
-
 };
 
 #endif // !FORWARD_CHAIN_H
+

@@ -21,3 +21,4 @@ public:
 };
 
 #endif // !CLAUSE_ITEM_H
+

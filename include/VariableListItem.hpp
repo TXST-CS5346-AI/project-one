@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "KnowledgeBase.h"
+#include "KnowledgeBase.hpp"
 
 class VariableListItem
 {
@@ -21,3 +21,4 @@ public:
 };
 
 #endif // !VARIABLE_LIST_ITEM_H
+
