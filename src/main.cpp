@@ -11,15 +11,6 @@
 #include "ForwardChain.hpp"
 #include "VariableListItem.hpp"
 
-void displayResults(int conclusion)
-{
-    // find the appropriate result string from the knowledge base 
-    // and display it.
-    if (0 == conclusion)
-    {
-        std::cout << "No conclusion was able to be made.";
-    }
-}
 
 /**
  * diagnose - as per project requirements, diagnose function emplyes Backward chaining
