@@ -17,7 +17,7 @@ VPATH = $(SOURCEDIR)
 # #  Regarding why I use C++11, please refer to README.md
 CXXFLAGS  = -g -std=c++11 -I$(INCLDIR)
 
-all: $(SRC)
+VehicleRepairAndDiagnosis: $(SRC)
 	$(CXX) -o $@ $^  $(CXXFLAGS) 
 
 

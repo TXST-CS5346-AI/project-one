@@ -1,8 +1,8 @@
 has_issue,Is there an issue with the vehicle? (y/n),STRING
 is_starting,Does the car start? (y/n),STRING
 has_fuel,Is there enough fuel? (y/n),STRING
-has_voltage,Does teh battery have enough voltage? (y/n),STRING
-is_ignition_coil_damaged,Is the ignition coil in good condition? (y/n),STRING
+has_voltage,Does the battery have enough voltage? (y/n),STRING
+is_ignition_coil_damaged,Is the ignition coil damaged? (y/n),STRING
 is_distributor_cap_damaged,Is the distributor cap cracked or broken? (y/n),STRING
 is_timing_belt_damaged,Is the timing belt damaged? (y/n),STRING
 is_making_noise,Is the car making an unusual noise? (y/n),STRING

@@ -66,10 +66,8 @@ void repair(ForwardChain& forwardChain)
  */
 int main(int argc, char* argv[])
 {
-
     std::cout << "Welcome to the Automobile Diagnostic Program." << std::endl;
     std::cout << "Authors: David Torrente, Randall Henderson, Borislav Sabotinov" << std::endl;
-    std::cout << argc << std::endl; 
  
     if (argc == 2 && (strcmp(argv[1], "-h") || strcmp(argv[1], "-help"))) 
     {

@@ -49,6 +49,9 @@ void BackChain::populateVariableList(std::string fileName)
 
     std::ifstream variableListFile;
     variableListFile.open(fileName);
+    int varCount = 0;
+
+    std::cout << "List of variables: "; 
 
     if (variableListFile)
     {
@@ -64,7 +67,7 @@ void BackChain::populateVariableList(std::string fileName)
             }
             name = csvLine.substr(startParseLocation, endParseLocation);
 
-            std::cout << name << std::endl;
+            std::cout << name << ", ";
 
             startParseLocation = endParseLocation + 1;
             endParseLocation = (csvLine.find(',', startParseLocation) - startParseLocation);
@@ -84,12 +87,14 @@ void BackChain::populateVariableList(std::string fileName)
             if (isValid)
             {
                 variableList.push_back(VariableListItem(name, false, "", prompt, type));
+                varCount++;
             }
             else
             {
-                std::cout << "Invalid entry, line " << csvLine << " not added." << std::endl;
+                std::cout << "\nInvalid entry, line " << csvLine << " not added." << std::endl;
             }
         }
+        std::cout << "\nNumber of variables: " << varCount << std::endl;
     }
     else
     {
@@ -201,7 +206,7 @@ bool BackChain::instantiatePremiseClause(const ClauseItem &clause)
             // premise. We need more info and will get it in this step.
             if (!variableList.at(premiseClauseIter).instantiated)
             {
-                std::cout << variableList.at(premiseClauseIter).description;
+                std::cout << variableList.at(premiseClauseIter).description << ": ";
                 std::cin >> variableList.at(premiseClauseIter).value;
                 variableList.at(premiseClauseIter).instantiated = true;
             }
@@ -317,9 +322,20 @@ void BackChain::runBackwardChaining()
 
     std::string conclusionToSolve = "";
     int conclusionLocation = 0;
-    bool isSolvedStatement = false;
+    bool isSolvedStatement = false;     
 
-    std::cout << "Please enter a conclusion to solve (values can be: issue, repair): ";
+    std::cout << "Please enter a conclusion to solve (values can be: "; 
+    int tmpSetCounter = 0; 
+    for (auto f : ruleSystem.conclusionSet) 
+    {
+        std::cout << f;
+        tmpSetCounter++;
+        if (tmpSetCounter != ruleSystem.conclusionSet.size())
+        {
+             std::cout << ", ";
+        }
+    }
+    std::cout << "): ";
     std::cin >> conclusionToSolve;
 
     conclusionLocation = findValidConclusionInStatements(conclusionToSolve, 1, "DONTCARE");

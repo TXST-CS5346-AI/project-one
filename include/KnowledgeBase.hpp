@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <set>
 
 #include "ClauseItem.hpp"
 #include "Statement.hpp"
@@ -17,7 +18,7 @@ public:
     std::string getConclusion(unsigned int);  //  get a conclusion from index provided
     std::string getPremise(unsigned int, unsigned int);  // first UI is kBase index, second is premise index  
     std::vector<Statement> kBase;
-
+    std::set<std::string> conclusionSet;
 private:
     bool isConclusionGood(Statement&, std::string, std::string&);
     bool arePremisesGood(Statement&, std::string);
