@@ -30,7 +30,7 @@ KnowledgeBase::KnowledgeBase()
  */
 void KnowledgeBase::populateKnowledgeBase(std::string fileName)
 {
-    int status;
+    int total_good = 0, total_bad = 0;
 
     std::string inputBuffer;
     std::ifstream inputFile;
@@ -38,9 +38,8 @@ void KnowledgeBase::populateKnowledgeBase(std::string fileName)
 
     if (inputFile)
     {
-        while (!inputFile.eof())
+        while (getline(inputFile, inputBuffer))  // while read was successfull
         {
-            getline(inputFile, inputBuffer);
             std::cout << "Processing:  " << inputBuffer << std::endl;
             if (inputBuffer.size() > 0)
             {
@@ -54,12 +53,19 @@ void KnowledgeBase::populateKnowledgeBase(std::string fileName)
                     {
                         std::cout << "Conclusion and premise(s) are good => List Updated\n";
                         kBase.push_back(lList);
+                        ++total_good;
                     }
                     else
+                    {
                         std::cout << "Premise List is formatted incorrectly.  List NOT updated\n";
+                        ++total_bad;
+                    }
                 }
                 else
+                {
                     std::cout << "Conclusion is formatted incorrectly.  List NOT updated\n";
+                    ++total_bad;
+                }
             }
             std::cout << std::endl; 
         }
@@ -67,9 +73,23 @@ void KnowledgeBase::populateKnowledgeBase(std::string fileName)
     else {
         throw std::runtime_error("Error reading Knowledge Base (KB) file. Please validate it uses the correct format. Invoke application with -h or -help for details.");
     }
-
+    std::cout << "\nKnowledge Base finished Loading.\n" << total_good << " items were loaded into the KnowledgeBase\n";
+    if ( total_bad > 0 )
+        std::cerr << "\nWARNING! " << total_bad << " malfromed item(s) were not loaded into the Knowledge Base. " << 
+        "\nPlease check output above for items not loaded and inspect data file.\n";
+    std::cout << "<CR/Enter> to continue  ";
+    std::cin.ignore();
 }
 
+/**
+ * isConclusionGood - helper function to check if the conclusion in the premise is valid and trim any white spaces
+ * 
+ * @param Statement& lList - a statement containing the premise list and the conclusion it leads to
+ * @param std::string iBuffer - the entire statement (premise and conclusions)
+ * @param std::string& listPremise - a list of the premises (left side of expression) 
+ * 
+ * @return bool - if the conclusion is valid, true. Otherwise false. 
+ */
 bool KnowledgeBase::isConclusionGood(Statement& lList, std::string iBuffer, std::string& listPremise)
 {
     ClauseItem nClause;
@@ -82,10 +102,13 @@ bool KnowledgeBase::isConclusionGood(Statement& lList, std::string iBuffer, std:
     listPremise = iBuffer.substr(0, indicatorLocation);
     listConclusion = iBuffer.substr(indicatorLocation + 1, iBuffer.size());
     indicatorLocation = listConclusion.find('=', 0);  // Assignment Symbol
+    
     if (indicatorLocation == -1)
         return false;
+    
     lList.conclusion.name = listConclusion.substr(0, indicatorLocation);
     
+    // trim white spaces in conclusion name, first front, then back
     if (lList.conclusion.name.front() == ' ')
     {
         lList.conclusion.name = lList.conclusion.name.substr(1);
@@ -96,7 +119,7 @@ bool KnowledgeBase::isConclusionGood(Statement& lList, std::string iBuffer, std:
     }
 
     lList.conclusion.value = listConclusion.substr(indicatorLocation + 1, listConclusion.size());
-    
+    // trim white spaces in conclusion value, first front, then back
     if (lList.conclusion.value.front() == ' ')
     {
         lList.conclusion.value = lList.conclusion.value.substr(1);
@@ -113,6 +136,14 @@ bool KnowledgeBase::isConclusionGood(Statement& lList, std::string iBuffer, std:
     return true;
 }
 
+/**
+ * isConclusionGood - helper function to check if the conclusion in the premise is valid and trim any white spaces
+ * 
+ * @param Statement& lList - a statement containing the premise list and the conclusion it leads to
+ * @param std::string& listPremise - a list of the premises (left side of expression) 
+ * 
+ * @return bool - if the premise is valid, true. Otherwise false. 
+ */
 bool KnowledgeBase::arePremisesGood(Statement& lList, std::string listPremise)
 {
     ClauseItem nClause;
@@ -123,19 +154,27 @@ bool KnowledgeBase::arePremisesGood(Statement& lList, std::string listPremise)
     {
         int andLocation = listPremise.find('^', 0),
             equalsLocation;
+
         if (andLocation == -1 && listPremise.size() == 0) // no premise
             return false;
+
         if (andLocation == -1)
             andLocation = listPremise.size();
+
         tmpList = listPremise.substr(0, andLocation);
         listPremise.erase(0, andLocation + 1);
         equalsLocation = tmpList.find('=', 0);  // assignment Symbol
+
         if (equalsLocation == -1)
             return false;
+
         listRight = tmpList.substr(0, equalsLocation);
         listLeft = tmpList.substr(equalsLocation + 1, tmpList.size());
+
         if (listLeft.size() == 0 || listRight.size() == 0)  // missing something
             return false;
+
+        // trim white space from clause name, first front then back
         nClause.name = listRight;
         if (nClause.name.front() == ' ')
         {
@@ -145,6 +184,8 @@ bool KnowledgeBase::arePremisesGood(Statement& lList, std::string listPremise)
         {
             nClause.name = nClause.name.substr(0, nClause.name.size() - 1);
         }
+
+        // trim white space from clause value, first front then back
         nClause.value = listLeft;
         if (nClause.value.front() == ' ')
         {
@@ -154,13 +195,20 @@ bool KnowledgeBase::arePremisesGood(Statement& lList, std::string listPremise)
         {
             nClause.value = nClause.value.substr(0, nClause.value.size() - 1);
         }
+
         nClause.type = STRING;
         lList.premiseList.push_back(nClause);
     } while (listPremise.size() != 0);
+
     std::cout << "Premise list is good!  " << lList.premiseList.size() - 1 << " premise(s) loaded\n";
     return true;
 }
 
+/**
+ * displayBase - prints out the imported knowledge base to the screen 
+ * We iterate over the knowledge base vector and print the premise list 
+ * and the conclusion they lead to in a human readable format. 
+ */
 void KnowledgeBase::displayBase()
 {
     Statement n;
@@ -183,13 +231,29 @@ void KnowledgeBase::displayBase()
     }
 }
 
-std::string KnowledgeBase::getConclusion(unsigned int it)
+/**
+ * getConclusion - helper function, which allows to get a conclusion of a specific index in the KB
+ * 
+ * @param unsigned int index - position of the statement in the knowledge base vector, whose conclusion we want
+ * 
+ * @return std::string the string representation of the conclusion
+ */ 
+std::string KnowledgeBase::getConclusion(unsigned int index)
 {
-    return kBase.at(it).conclusion.name;
+    return kBase.at(index).conclusion.name;
 }
 
-std::string KnowledgeBase::getPremise(unsigned int it, unsigned int it1)
+/**
+ * getConclusion - helper function, which allows to get a conclusion of a specific index in the KB
+ * 
+ * @param unsigned int index - position of the statement in the knowledge base vector, whose conclusion we want
+ * @param unsigned int index_1 - once we know which statement, we need to know which premise
+ *                               as a statement may contain one or more premises. 
+ * 
+ * @return std::string the string representation of the premise
+ */ 
+std::string KnowledgeBase::getPremise(unsigned int index, unsigned int index_1)
 {
-    return kBase.at(it).premiseList.at(it1).name;
+    return kBase.at(index).premiseList.at(index_1).name;
 }
 
