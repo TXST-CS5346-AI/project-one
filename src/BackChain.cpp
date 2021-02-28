@@ -206,6 +206,7 @@ bool BackChain::instantiatePremiseClause(const ClauseItem &clause)
             {
                 std::cout << variableList.at(premiseClauseIter).description << ": ";
                 std::cin >> variableList.at(premiseClauseIter).value;
+                std::cout << "\nYou entered: " << variableList.at(premiseClauseIter).value << std::endl;
                 variableList.at(premiseClauseIter).instantiated = true;
             }
 
@@ -335,6 +336,7 @@ void BackChain::runBackwardChaining()
     }
     std::cout << "): ";
     std::cin >> conclusionToSolve;
+    std::cout << "\nYou entered: " << conclusionToSolve << std::endl;
 
     conclusionLocation = findValidConclusionInStatements(conclusionToSolve, 1, "DONTCARE");
 

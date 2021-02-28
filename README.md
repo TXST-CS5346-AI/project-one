@@ -7,14 +7,6 @@ Authors:
 * [Borislav Sabotinov](https://github.com/bss8)
 * [Randal Henderson](https://github.com/RRHenderson)
 
-## Reports
-
-Reports for all team members are located under:     
-`resources/reports` directory. 
-
-To navigate there, cd into the directory: 
-
-`cd resources/reports`
 
 ## 1. Technical Specifications
 <hr>
@@ -23,9 +15,25 @@ To navigate there, cd into the directory:
 
 ### 1.1 Build and run the application 
 
-This application is primarily designed to run on Texas State (TXST) Linux servers. 
-Eros: EROS.CS.TXSTATE.EDU (147.26.231.153)
+This application is primarily designed to run on Texas State (TXST) Linux servers.     
+Eros: EROS.CS.TXSTATE.EDU (147.26.231.153)    
 Zeus: ZEUS.CS.TXSTATE.EDU (147.26.231.156)
+
+You may use WinSCP or FileZilla or equivalent to transer the ZIP to a TXST Linux host. 
+Drop the ZIP in a directory you own (e.g., /home/Students/bss64)
+
+Open permissions: `chmod 755 *.zip`    
+Unzip: `unzip <zip-file-name>.zip`
+Go into directory: `cd Project1-<Student-ID>`
+
+#### Reports
+
+Reports for all team members are located under:     
+`resources/reports` directory. 
+
+To navigate there, cd into the directory: 
+
+`cd resources/reports`
 
 Upon invoking the program, the knowledge base (KB) file will be parsed and if correctly formatted, each statement (line) will be processed and displayed to the console.
 
@@ -121,7 +129,9 @@ This simplifies the design and the user experience, allowing the user to enter o
 BackChain has a VariableListItem and a KnowledgeBase    
 ForwardChain has a VariableListItem, a KnowledgeBase, and ClauseItem (via queue)    
 KnowledgeBase has a Statement     
-Statement has a ClauseItem    
+Statement has a ClauseItem   
+
+![UML Class Diagram](/resources/images/Vehicle_Diagnosis_Class_Diagram.png)
 
 
 ###  2.3 Why C++11? 
@@ -144,3 +154,4 @@ A small aside but worth mentioning. Why use c++11 compiler? C++11 now supports:
 
 1. Gaddis, Tony. "Starting out with C++ From Control Structures through Objects, Ninth Edition." Chapter 10 (c-strings & the string class), Chapter 17.3 the Vector Class.
 2. Huntington, Dustin. "Back to Basics –. Backward Chaining: Expert System Fundamentals." http://www.exsys.com/pdf/BackwardChaining.pdf 
+3. C++03 Standard [2.1.1.2]. https://gcc.gnu.org/legacy-ml/gcc/2001-07/msg01120.html
