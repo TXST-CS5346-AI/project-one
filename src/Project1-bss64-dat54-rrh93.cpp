@@ -11,15 +11,6 @@
 #include "ForwardChain.hpp"
 #include "VariableListItem.hpp"
 
-void displayResults(int conclusion)
-{
-    // find the appropriate result string from the knowledge base 
-    // and display it.
-    if (0 == conclusion)
-    {
-        std::cout << "No conclusion was able to be made.";
-    }
-}
 
 /**
  * diagnose - as per project requirements, diagnose function emplyes Backward chaining
@@ -67,15 +58,18 @@ void repair(ForwardChain& forwardChain)
 int main(int argc, char* argv[])
 {
     std::cout << "Welcome to the Automobile Diagnostic Program." << std::endl;
-    std::cout << "Authors: David Torrente, Randall Henderson, Borislav Sabotinov" << std::endl;
- 
+    std::cout << "Authors: David Torrente (dat54@txstate.edu), Randall Henderson (rrh93@txstate.edu), Borislav Sabotinov (bss64@txstate.edu)." << std::endl;
+    std::cout << std::endl;
+
     if (argc == 2 && (strcmp(argv[1], "-h") || strcmp(argv[1], "-help"))) 
     {
         std::cout << "To use this program, please read the instructions below and re-launch." << std::endl;
         std::cout << "Additional details for building and execution are also available in the README.md file." << std::endl;
-        std::cout << "First, the variablesList.csv and knowledgeBase.txt files will be processed to create an instance of the knowledge base" << std::endl;
-        std::cout << "Next, the user will be prompted for a conclusion to solve." << std::endl;
-        std::cout << "Valid choices are: issue, repair." << std::endl;
+        std::cout << std::endl;
+
+        std::cout << "1. variablesList.csv and knowledgeBase.txt files will be processed to create an instance of the knowledge base" << std::endl;
+        std::cout << "2. user will be prompted for a conclusion to solve." << std::endl;
+        std::cout << "     - Valid choices for the provided KB file are: issue, repair." << std::endl;
 
         return EXIT_SUCCESS;
     }
@@ -84,6 +78,12 @@ int main(int argc, char* argv[])
     BackChain backChain;
     backChain.populateLists();
 
+    std::string displayKb;
+    std::cout << "Do you want to display the knowledge base (Y/n)? ";
+    std::cin >> displayKb;
+
+    if ((displayKb == "Y") || (displayKb == "y"))
+        backChain.ruleSystem.displayBase();
 
     diagnose(backChain);
 

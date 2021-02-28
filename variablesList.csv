@@ -35,11 +35,11 @@ has_burning_plastic_smell,Do you smell any burning plastic / electric insulation
 is_radio_working,Does the radio power on? (y/n),STRING
 is_radio_fuse_intact,Is the radio fuse intact? (y/n),STRING
 are_radio_wires_connected,Are radio ground and power wires connected? (y/n),STRING
-does_wheel_turn,Does the wheel turn stiffly or fail to turn? (y/n),STRING
+does_wheel_turn,Does the steering wheel turn? (y/n),STRING
 is_power_steering_fuse_intact,Is the power steering fuse intact? (y/n),STRING
 has_power_steering_fluid,Is there enough power steering fluid? (y/n),STRING
 are_tires_deflated,Are any of the tires visibly deflated or is the low pressure light on? (y/n),STRING
-has_piercing_object,"Is there a sharp item (e.g., nail) stuck in the deflated tire? (y/n)",STRING
+has_piercing_object,Is there a sharp item (e.g. nail) stuck in the deflated tire? (y/n),STRING
 is_obj_inch_away_from_edge,Is the piercing object more than 1in away from the tire edge? (y/n),STRING
 is_recent_temp_change,Was there a recent temperature change? (y/n),STRING
 is_exterior_damaged,Is the exterior of the vehicle damaged? (y/n),STRING

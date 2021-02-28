@@ -7,6 +7,11 @@
 #define STRING 2
 #define FLOAT 3
 
+/**
+ * ClauseItem - Represents either a premise or a conclusion (or both). 
+ * How a variable is treated depends on the data structure in which it 
+ * resides (e.g., premiseList or conclusionList)
+ */ 
 class ClauseItem
 {
 public:

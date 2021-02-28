@@ -110,25 +110,13 @@ void ForwardChain::runForwardChaining()
 
         //go through the variable list's inverted index of statements and push any valid conclusions.
         //make sure to prompt for entry of any non instantiated.
-        //maybe turn this into a function?
-        //int curStatement;
         if (variableListEntry != -1)
         {
             processStatementIndex(variableListEntry);
-            /*            for (int variableListIter = 1; variableListIter < variableList.at(variableListEntry).statementIndex.size(); variableListIter++)
-            {
-                //           = The matching variable list entry  . The individual statment number
-                curStatement = variableList.at(variableListEntry).statementIndex.at(variableListIter);
-                if (true == processPremiseList(ruleSystem.kBase.at(curStatement).premiseList))
-                {
-                    conclusionVariableQueue.push(ruleSystem.kBase.at(curStatement).conclusion);
-                }
-            }
-*/
         }
     }
 
-    std::cout << "The final conclusion is " << queueTopPtr.name << " with a value of " << queueTopPtr.value << std::endl;
+    std::cout << "The final conclusion is - " << queueTopPtr.name << " - with a value of: " << queueTopPtr.value << std::endl;
 }
 
 /**
