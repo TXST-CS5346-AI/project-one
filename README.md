@@ -7,14 +7,6 @@ Authors:
 * [Borislav Sabotinov](https://github.com/bss8)
 * [Randal Henderson](https://github.com/RRHenderson)
 
-## Reports
-
-Reports for all team members are located under:     
-`resources/reports` directory. 
-
-To navigate there, cd into the directory: 
-
-`cd resources/reports`
 
 ## 1. Technical Specifications
 <hr>
@@ -23,9 +15,25 @@ To navigate there, cd into the directory:
 
 ### 1.1 Build and run the application 
 
-This application is primarily designed to run on Texas State (TXST) Linux servers. 
-Eros: EROS.CS.TXSTATE.EDU (147.26.231.153)
+This application is primarily designed to run on Texas State (TXST) Linux servers.     
+Eros: EROS.CS.TXSTATE.EDU (147.26.231.153)    
 Zeus: ZEUS.CS.TXSTATE.EDU (147.26.231.156)
+
+You may use WinSCP or FileZilla or equivalent to transer the ZIP to a TXST Linux host. 
+Drop the ZIP in a directory you own (e.g., /home/Students/bss64)
+
+Open permissions: `chmod 755 *.zip`    
+Unzip: `unzip <zip-file-name>.zip`
+Go into directory: `cd Project1-<Student-ID>`
+
+#### Reports
+
+Reports for all team members are located under:     
+`resources/reports` directory. 
+
+To navigate there, cd into the directory: 
+
+`cd resources/reports`
 
 Upon invoking the program, the knowledge base (KB) file will be parsed and if correctly formatted, each statement (line) will be processed and displayed to the console.
 
