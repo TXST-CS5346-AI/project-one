@@ -55,10 +55,8 @@ void BackChain::populateVariableList(std::string fileName)
 
     if (variableListFile)
     {
-        while (!variableListFile.eof())
+        while (getline(variableListFile, csvLine))
         {
-            getline(variableListFile, csvLine);
-
             startParseLocation = 0;
             endParseLocation = (csvLine.find(',', startParseLocation) - startParseLocation);
             if (endParseLocation <= -1)
@@ -343,20 +341,20 @@ void BackChain::runBackwardChaining()
     //is a conclusion but not valid
     if (conclusionLocation == -1)
     {
-        std::cout << "conclusion is NOT valid";
+        std::cout << "No conclusion match available. Based on your entries, the results are inconclusive. ";
     }
     
     //is a conclusion and valid
     if (conclusionLocation > 0)
     {
-        std::cout << "Result is " << ruleSystem.kBase.at(conclusionLocation).conclusion.value << std::endl;
-        std::cout << "conclusion is valid";
+        std::cout << "\nResult is: " << ruleSystem.kBase.at(conclusionLocation).conclusion.value << std::endl;
+        std::cout << "Conclusion is valid. ";
     }
 
     //not a conclusion
     if (conclusionLocation == 0)
     {
-        std::cout << "no conclusion";
+        std::cout << "No conclusion. ";
     }
 }
 

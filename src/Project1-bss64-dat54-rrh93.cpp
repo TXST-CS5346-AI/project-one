@@ -58,7 +58,7 @@ void repair(ForwardChain& forwardChain)
 int main(int argc, char* argv[])
 {
     std::cout << "Welcome to the Automobile Diagnostic Program." << std::endl;
-    std::cout << "Authors: David Torrente, Randall Henderson, Borislav Sabotinov" << std::endl;
+    std::cout << "Authors: David Torrente (dat54@txstate.edu), Randall Henderson (rrh93@txstate.edu), Borislav Sabotinov (bss64@txstate.edu)." << std::endl;
     std::cout << std::endl;
 
     if (argc == 2 && (strcmp(argv[1], "-h") || strcmp(argv[1], "-help"))) 
@@ -78,6 +78,12 @@ int main(int argc, char* argv[])
     BackChain backChain;
     backChain.populateLists();
 
+    std::string displayKb;
+    std::cout << "Do you want to display the knowledge base (Y/n)? ";
+    std::cin >> displayKb;
+
+    if ((displayKb == "Y") || (displayKb == "y"))
+        backChain.ruleSystem.displayBase();
 
     diagnose(backChain);
 

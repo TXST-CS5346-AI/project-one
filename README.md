@@ -7,12 +7,21 @@ Authors:
 * [Borislav Sabotinov](https://github.com/bss8)
 * [Randal Henderson](https://github.com/RRHenderson)
 
-## <span style="color:#828"> 1. Technical Specifications </span>
+## Reports
+
+Reports for all team members are located under:     
+`resources/reports` directory. 
+
+To navigate there, cd into the directory: 
+
+`cd resources/reports`
+
+## 1. Technical Specifications
 <hr>
 
 ![Code quality grade](https://www.code-inspector.com/project/19629/score/svg)
 
-### <span style="color:#0da2ff"> 1.1 Build and run the application </span>
+### 1.1 Build and run the application 
 
 This application is primarily designed to run on Texas State (TXST) Linux servers. 
 Eros: EROS.CS.TXSTATE.EDU (147.26.231.153)
@@ -20,14 +29,14 @@ Zeus: ZEUS.CS.TXSTATE.EDU (147.26.231.156)
 
 Upon invoking the program, the knowledge base (KB) file will be parsed and if correctly formatted, each statement (line) will be processed and displayed to the console.
 
-### <span style="color:#0da2ff"> 1.2 Automated build with log file </span>
+### 1.2 Automated build with log file
 
 Simply run the below command from the root directory:     
  `./buildAndRun.sh`
 
 After a complete run, log will be in root dir as `vehicle_diagnosis.log`
 
-### <span style="color:#0da2ff"> 1.3 Manual build (no log) </span>
+### 1.3 Manual build (no log) 
 
 To build locally, run this command in the root directory: `make`
 
@@ -40,21 +49,24 @@ To run: `./VehicleRepairAndDiagnosis`
 Once KB file is loaded and variables list parsed, user is prompted for a conclusion.     
 Upon entering a conclusion, the user will be prompted with questions until a solution is found (if available). 
 
-### <span style="color:#0da2ff"> 1.4 Loading the Knowledge Base </span>
+### 1.4 Loading the Knowledge Base 
 
-### <span style="color:#0da2ff"> 1.5 Error handling </span>
+### 1.5 Error handling 
+This section intentionally shows what CLI output would look like, given a defective KB file.    
 If, after loading the KB file, you see this message: 
 ![Error loading KB](resources/images/error_check_example_kb_validation_2.jpg)
 
 Then scroll up and look through the readout (alternatively, look through the generated vehicle_diagnosis.log file) for a line like this: 
 ![Error loading KB](resources/images/error_check_example_kb_validation_1.jpg)
 
-### <span style="color:#0da2ff"> 1.6 Normal operation </span>
+The KB file line must be corrected for correct processing. 
+
+### 1.6 Normal operation 
 
 Once the KB file is corrected, the output should look like this: 
 ![Error loading KB](resources/images/normal_operation_kb_no_error.jpg)
 
-### <span style="color:#0da2ff"> 1.7 Using the application </span>
+### 1.7 Using the application 
 
 After the KB file is loaded, program will pause, allowing you to view output.     
 Press Enter to continue. 
@@ -80,16 +92,16 @@ If you select repair, follow the prompts as shown in this example:
 ![Repair conclusion](resources/images/repair_conclusion.jpg)
 
 
-## <span style="color:#828"> 2. Design </span>
+## 2. Design 
 <hr>
 
-### <span style="color:#0da2ff"> 2.1 Decision Tree Diagram </span>
+### 2.1 Decision Tree Diagram 
 
 The application comes with a pre-defined knowledge base for a vehicle repair and diagnosys system. 
 
 ![Decision tree diagram](resources/images/CS5346_Decision_Tree.png)
 
-### <span style="color:#0da2ff"> 2.2 Variables </span>
+### 2.2 Variables 
 
 46 variables are used in the provided knowledge base. 
 
@@ -104,7 +116,15 @@ As an additional example - instead of asking the user to input their GPA and hav
 
 This simplifies the design and the user experience, allowing the user to enter only yes or no for each question. 
 
-### <span style="color:#0da2ff"> 2.3 Why C++11? </span>
+### Class relationships 
+
+BackChain has a VariableListItem and a KnowledgeBase    
+ForwardChain has a VariableListItem, a KnowledgeBase, and ClauseItem (via queue)    
+KnowledgeBase has a Statement     
+Statement has a ClauseItem    
+
+
+###  2.3 Why C++11? 
 
 A small aside but worth mentioning. Why use c++11 compiler? C++11 now supports:
 
@@ -119,7 +139,7 @@ A small aside but worth mentioning. Why use c++11 compiler? C++11 now supports:
 "The C++11 Standard Library was also revamped with new algorithms, new container classes, atomic operations, type traits, regular expressions, new smart pointers, async() facility, and of course a multithreading library"      
  https://smartbear.com/blog/develop/the-biggest-changes-in-c11-and-why-you-should-care/
 
-## <span style="color:#828"> 3. References </span>
+## <span style="color:#828"> 3. References 
 <hr>
 
 1. Gaddis, Tony. "Starting out with C++ From Control Structures through Objects, Ninth Edition." Chapter 10 (c-strings & the string class), Chapter 17.3 the Vector Class.
