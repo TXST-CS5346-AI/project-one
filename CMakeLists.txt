@@ -12,7 +12,7 @@ add_executable(project_one
         include/Statement.hpp
         include/VariableListItem.hpp
         include/ForwardChain.hpp
-        src/Project1-bss64-dat54-rrh93.cpp.cpp
+        src/Project1-bss64-dat54-rrh93.cpp
         src/BackChain.cpp
         src/ClauseItem.cpp
         src/KnowledgeBase.cpp
