@@ -121,7 +121,9 @@ This simplifies the design and the user experience, allowing the user to enter o
 BackChain has a VariableListItem and a KnowledgeBase    
 ForwardChain has a VariableListItem, a KnowledgeBase, and ClauseItem (via queue)    
 KnowledgeBase has a Statement     
-Statement has a ClauseItem    
+Statement has a ClauseItem   
+
+![UML Class Diagram](/resources/images/Vehicle_Diagnosis_Class_Diagram.png)
 
 
 ###  2.3 Why C++11? 
@@ -144,3 +146,4 @@ A small aside but worth mentioning. Why use c++11 compiler? C++11 now supports:
 
 1. Gaddis, Tony. "Starting out with C++ From Control Structures through Objects, Ninth Edition." Chapter 10 (c-strings & the string class), Chapter 17.3 the Vector Class.
 2. Huntington, Dustin. "Back to Basics –. Backward Chaining: Expert System Fundamentals." http://www.exsys.com/pdf/BackwardChaining.pdf 
+3. C++03 Standard [2.1.1.2]. https://gcc.gnu.org/legacy-ml/gcc/2001-07/msg01120.html

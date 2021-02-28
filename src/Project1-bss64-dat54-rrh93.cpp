@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
     backChain.populateLists();
 
     std::string displayKb;
-    std::cout << "Do you want to display the knowledge base (Y/n)? ";
+    std::cout << "Do you want to display the knowledge base (y/n)? ";
     std::cin >> displayKb;
 
     if ((displayKb == "Y") || (displayKb == "y"))
