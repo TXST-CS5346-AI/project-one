@@ -49,5 +49,6 @@ crashlytics-build.properties
 
 #project specific
 *.log
+vehicle_diagnosis.log 
 all
 VehicleRepairAndDiagnosis
