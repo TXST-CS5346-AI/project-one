@@ -8,7 +8,10 @@
 #include "ClauseItem.hpp"
 #include "Statement.hpp"
 
-
+/**
+* KnowledgeBase - parses a text file of statements and acts as a database; it contains a vector of statement.
+* This class allows us to more clearly separate the knowledge base from the inference enginge. 
+*/
 class KnowledgeBase 
 {
 public:
