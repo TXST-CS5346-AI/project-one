@@ -10,6 +10,10 @@
 #include "ClauseItem.hpp"
 #include "KnowledgeBase.hpp"
 
+/**
+* Through forward chaining, we provide repair recommendations to the user based on their input. 
+* We pass a copy of the KnowledgeBase from BackChain to ForwardChain. 
+*/
 class ForwardChain
 {
 public:
