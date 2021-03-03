@@ -71,7 +71,8 @@ void KnowledgeBase::populateKnowledgeBase(std::string fileName)
         }
     }
     else {
-        throw std::runtime_error("Error reading Knowledge Base (KB) file. Please validate it uses the correct format. Invoke application with -h or -help for details.");
+        throw std::runtime_error(
+            "Error reading Knowledge Base (KB) file. Please validate it uses the correct format. Invoke application with -h or -help for details.");
     }
     std::cout << "\nKnowledge Base finished Loading.\n" << total_good << " items were loaded into the KnowledgeBase\n";
     if ( total_bad > 0 )
