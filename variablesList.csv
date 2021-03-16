@@ -1,0 +1,46 @@
+has_issue,Is there an issue with the vehicle? (y/n),STRING
+is_starting,Does the car start? (y/n),STRING
+has_fuel,Is there enough fuel? (y/n),STRING
+has_voltage,Does the battery have enough voltage? (y/n),STRING
+is_ignition_coil_damaged,Is the ignition coil damaged? (y/n),STRING
+is_distributor_cap_damaged,Is the distributor cap cracked or broken? (y/n),STRING
+is_timing_belt_damaged,Is the timing belt damaged? (y/n),STRING
+is_making_noise,Is the car making an unusual noise? (y/n),STRING
+is_noisy_while_driving,Does the noise occur when driving? (y/n),STRING
+is_ticking_noise,Is the car making a ticking noise? (y/n),STRING
+is_hiccup_noise,Is the car making a rattly noise like a hiccup? (y/n),STRING
+is_air_filter_dirty,Is the air filter dirty? (y/n),STRING
+is_exhaust_blocked,Is anything blocking the exhaust? (y/n),STRING
+are_wheel_bearings_damaged,Are wheel bearings damaged/loose? (y/n),STRING
+are_tires_bald,Are tires beyond service life (tread depth less than 1/32in)? (y/n),STRING
+is_truck,Is the vehicle a truck? (y/n),STRING
+has_items_in_truck_bed,Are there items in the truck bed? (y/n),STRING
+has_items_on_roof,Does the vehicle have any items latched to the roof? (y/n),STRING
+is_overheating,Does the temperature gauge show as overheating? (y/n),STRING
+has_coolant,Is there sufficient coolant in the engine? (y/n),STRING
+is_water_pump_broken,Is the water pump broken? (y/n),STRING
+is_oil_low_or_dirty,Is the oil level low or dirty (black in color)? (y/n),STRING
+has_nonfunctional_electronics,Are any electronics not functional? (y/n),STRING
+does_ac_power_on,Does the AC power on? (y/n),STRING
+does_ac_blow_cold,Does the AC blow cold? (y/n),STRING
+has_nonfunctional_headlights,Are any headlights or lights not turning on? (y/n),STRING
+is_ac_fuse_intact,Is the AC fuse intact? (y/n),STRING
+are_ac_wires_connected,Are AC ground and power wires connected? (y/n),STRING
+are_therm_settings_correct,Are the thermostat settings correct? (y/n),STRING
+is_evaporator_coil_frozen,Is the evaporator coil frozen? (y/n),STRING
+is_air_filter_dirty,Is the air filter dirty? (y/n),STRING
+is_nonfunct_light_fuse_intact,Is the respective non-working light fuse intact? (y/n),STRING
+are_nonfunct_light_wires_conn,Are ground and power wires connected? (y/n),STRING
+has_burning_plastic_smell,Do you smell any burning plastic / electric insulation? (y/n),STRING
+is_radio_working,Does the radio power on? (y/n),STRING
+is_radio_fuse_intact,Is the radio fuse intact? (y/n),STRING
+are_radio_wires_connected,Are radio ground and power wires connected? (y/n),STRING
+does_wheel_turn,Does the steering wheel turn? (y/n),STRING
+is_power_steering_fuse_intact,Is the power steering fuse intact? (y/n),STRING
+has_power_steering_fluid,Is there enough power steering fluid? (y/n),STRING
+are_tires_deflated,Are any of the tires visibly deflated or is the low pressure light on? (y/n),STRING
+has_piercing_object,Is there a sharp item (e.g. nail) stuck in the deflated tire? (y/n),STRING
+is_obj_inch_away_from_edge,Is the piercing object more than 1in away from the tire edge? (y/n),STRING
+is_recent_temp_change,Was there a recent temperature change? (y/n),STRING
+is_exterior_damaged,Is the exterior of the vehicle damaged? (y/n),STRING
+is_damage_cosmetic,Is the damage cosmetic paint scratch only? (y/n),STRING
